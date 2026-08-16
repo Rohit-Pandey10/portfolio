@@ -1,0 +1,9 @@
+{
+  "name": "portfolio-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install": "npm install --prefix client && npm install --prefix server",
+    "build": "npm run build --prefix client && cp -r client/dist dist"
+  }
+}

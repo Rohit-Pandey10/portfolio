@@ -1,0 +1,40 @@
+/* =========================================================
+   tokens.css — Design System Tokens
+   All CSS custom properties for the Rohit Pandey portfolio.
+   Never hardcode these values in component files.
+   ========================================================= */
+
+:root {
+  /* ── Colors ────────────────────────────────────────── */
+  --color-ink:        #121010;   /* Background */
+  --color-charcoal:   #1C1A18;   /* Surface / Card */
+  --color-border:     #2C2A27;   /* Charcoal Line */
+  --color-text:       #F5F3EF;   /* Primary text (Off-White) */
+  --color-secondary:  #A39C92;   /* Secondary text (Warm Grey) */
+  --color-muted:      #6E675E;   /* Muted text */
+
+  --color-mint:       #BFEFD4;   /* Accent Mint — name treatment, solved/success */
+  --color-blush:      #F6C9D6;   /* Accent Blush — section headline statements */
+  --color-lavender:   #D9CFF2;   /* Accent Lavender — primary CTA, buttons, links */
+
+  /* ── Typography ─────────────────────────────────────── */
+  --font-display:     'Anton', 'Archivo Black', sans-serif;  /* ALL CAPS poster headlines */
+  --font-body:        'Lora', 'Georgia', serif;               /* Narrative / paragraph text */
+  --font-ui:          'Manrope', sans-serif;                  /* Nav, buttons, labels */
+  --font-mono:        'JetBrains Mono', monospace;            /* Stats, code, ratings */
+
+  /* ── Spacing ─────────────────────────────────────────── */
+  --section-padding-y:   6rem;
+  --section-padding-x:   1.5rem;
+  --container-max:       1200px;
+
+  /* ── Border radius ───────────────────────────────────── */
+  --radius-card:   0.75rem;
+  --radius-pill:   9999px;
+  --radius-sm:     0.375rem;
+
+  /* ── Transitions ─────────────────────────────────────── */
+  --transition-fast:   150ms ease;
+  --transition-base:   250ms ease;
+  --transition-slow:   400ms ease;
+}

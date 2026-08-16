@@ -1,0 +1,176 @@
+/* =========================================================
+   index.css — Global styles
+   Imports tokens, sets base resets, and global typography.
+   ========================================================= */
+
+@import './styles/tokens.css';
+@import "tailwindcss";
+
+/* ── Base Reset ─────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Global typography helpers ──────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-body    { font-family: var(--font-body); }
+.font-ui      { font-family: var(--font-ui); }
+.font-mono    { font-family: var(--font-mono); }
+
+/* ── Colour helpers ─────────────────────────────────────── */
+.text-mint     { color: var(--color-mint); }
+.text-blush    { color: var(--color-blush); }
+.text-lavender { color: var(--color-lavender); }
+.text-secondary { color: var(--color-secondary); }
+.text-muted    { color: var(--color-muted); }
+
+/* ── Section layout helpers ──────────────────────────────── */
+.section {
+  padding: var(--section-padding-y) var(--section-padding-x);
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Display headline (Anton, ALL CAPS) ─────────────────── */
+.headline-display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+}
+
+/* ── Section label (small uppercase, Manrope) ───────────── */
+.section-label {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* ── Card base ───────────────────────────────────────────── */
+.card {
+  background-color: var(--color-charcoal);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 1.5rem;
+}
+
+/* ── Button base ─────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity var(--transition-fast), transform var(--transition-fast), background-color var(--transition-fast);
+  border: none;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-lavender);
+  outline-offset: 3px;
+}
+
+/* Primary — solid Lavender fill, dark Ink text */
+.btn-primary {
+  background-color: var(--color-lavender);
+  color: var(--color-ink);
+}
+
+/* Secondary — outlined/ghost */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-secondary);
+}
+
+/* ── Skeleton loading placeholder ────────────────────────── */
+@keyframes shimmer {
+  0%   { opacity: 0.4; }
+  50%  { opacity: 0.7; }
+  100% { opacity: 0.4; }
+}
+
+.skeleton {
+  background-color: var(--color-border);
+  border-radius: var(--radius-sm);
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ── Scroll reveal animation ─────────────────────────────── */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+}
+
+.reveal.visible {
+  animation: fadeSlideUp 0.5s var(--transition-base) forwards;
+}
+
+/* ── Scrollbar (dark, minimal) ───────────────────────────── */
+::-webkit-scrollbar         { width: 6px; }
+::-webkit-scrollbar-track   { background: var(--color-ink); }
+::-webkit-scrollbar-thumb   { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-muted); }
+
+/* ── Focus ring for accessibility ────────────────────────── */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-lavender);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* ── Links ───────────────────────────────────────────────── */
+a {
+  color: inherit;
+  text-decoration: none;
+}

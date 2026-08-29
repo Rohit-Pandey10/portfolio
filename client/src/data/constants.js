@@ -21,7 +21,7 @@ export const LINKS = {
   codolio:  'https://codolio.com/profile/Rohit_Pandey10',
   leetcode: 'https://leetcode.com/u/Rohit_Pandey10/',
   codechef: 'https://www.codechef.com/users/rohit_pandey10',
-  codeforces: 'https://codeforces.com/profile/Rohit_Pandey10',
+  codeforces: 'https://codeforces.com/profile/Rohit.Pandey',
 };
 
 // ── CP Profile buttons (AtCoder intentionally excluded — see AGENTS.md) ──
@@ -33,22 +33,23 @@ export const CP_PROFILE_BUTTONS = [
 ];
 
 // ── Hardcoded fallback CP stats (used only if all fetch tiers fail) ───────
-// NOTE: totalProblemsSolved (212) is a legacy combined approximation predating
-// the LeetCode+Codeforces-only definition. It is used only as an absolute last
-// resort when every other tier fails. Replace with real per-platform fallback
-// numbers once confirmed.
+// NOTE: totalProblemsSolved (250) is a recent approximation (LeetCode + Codeforces
+// + CodeChef combined). It is used only as a last resort when every API tier
+// fails. Components display this as '250+' (source-aware formatting) to signal
+// it's an estimate, not a live count.
 export const CP_FALLBACK = {
-  totalProblemsSolved: 212,
-  leetcodeSolved: null,
-  codeforcesSolved: null,
+  totalProblemsSolved: 245,   // LC 51 + CF ~140 + CC 54, confirmed Aug 2026
+  leetcodeSolved: 51,
+  codeforcesSolved: 140,
+  codechefSolved: 54,
   activeDays: 89,
-  contestsAttended: 22,
-  difficultyBreakdown: { easy: 24, medium: 20, hard: 0 },
+  contestsAttended: 23,
+  difficultyBreakdown: { easy: 29, medium: 21, hard: 1 },
   leetcodeContestRating: 1500,
   leetcodeLatestContest: 'Biweekly Contest 187',
-  codechefRating: 1376,
+  codechefRating: 1372,
   codechefMaxRating: 1409,
-  codeforcesRating: 928,
+  codeforcesRating: 935,
   codeforcesMaxRating: 1199,
   codeforcesTitle: 'Newbie',
   source: 'client-fallback',

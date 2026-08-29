@@ -14,18 +14,18 @@ const { getCodeChefStats } = require('./codechefService');
 
 // ─── Tier 4: Hardcoded fallback constants ────────────────────────────────────
 const HARDCODED_FALLBACK = {
-  totalProblemsSolved: 212,
-  leetcodeSolved: null,
-  codeforcesSolved: null,
-  codechefSolved: null,
+  totalProblemsSolved: 245,   // LC 51 + CF ~140 + CC 54, confirmed Aug 2026
+  leetcodeSolved: 51,
+  codeforcesSolved: 140,
+  codechefSolved: 54,
   activeDays: 89,
-  contestsAttended: 22,
-  difficultyBreakdown: { easy: 24, medium: 20, hard: 0 },
+  contestsAttended: 23,
+  difficultyBreakdown: { easy: 29, medium: 21, hard: 1 },
   leetcodeContestRating: 1500,
   leetcodeLatestContest: 'Biweekly Contest 187',
-  codechefRating: 1376,
+  codechefRating: 1372,
   codechefMaxRating: 1409,
-  codeforcesRating: 928,
+  codeforcesRating: 935,
   codeforcesMaxRating: 1199,
   codeforcesTitle: 'Newbie',
   source: 'fallback',

@@ -15,7 +15,7 @@
  *      powering Hero stat cards + the CP section). No second fetch.
  */
 
-import { useCpStats } from '../context/CpStatsContext';
+import { useCpStats, formatSolved } from '../context/CpStatsContext';
 import { SKILLS }     from '../data/constants';
 
 // ── Card 2: derive chip list from SKILLS (read-only, no mutation) ───────────
@@ -154,7 +154,7 @@ function CpTeaserCard() {
         <div style={{ display: 'flex', gap: '1.5rem' }}>
           <div>
             <p style={{ fontSize: '1.4rem', fontWeight: 600, color: 'var(--color-mint)', lineHeight: 1 }}>
-              250+
+              {formatSolved(data)}
             </p>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.62rem', color: 'var(--color-muted)', marginTop: '0.25rem', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
               Solved

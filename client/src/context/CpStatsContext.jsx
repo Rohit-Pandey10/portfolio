@@ -11,6 +11,25 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { CP_FALLBACK } from '../data/constants';
 
+/**
+ * Format the totalProblemsSolved value for display.
+ *
+ * Rules:
+ *   - Live 'platform-apis' data  → bare number, e.g. "312"
+ *   - 'cache' or 'client-fallback' → number + '+', e.g. "250+"
+ *     (cache may be stale; fallback is an approximation)
+ *   - null / undefined             → '—'
+ *
+ * Pass the full data object, not just the number, so the function
+ * can inspect data.source without callers needing to know the rule.
+ */
+export function formatSolved(data) {
+  const n = data?.totalProblemsSolved;
+  if (n == null) return '—';
+  const isApproximate = !data?.source || data.source !== 'platform-apis';
+  return isApproximate ? `${n}+` : String(n);
+}
+
 const CpStatsContext = createContext(null);
 
 export function CpStatsProvider({ children }) {

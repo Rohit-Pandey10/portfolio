@@ -14,7 +14,7 @@
  * Error/fallback: shows data with a subtle "using cached data" note
  */
 
-import { useCpStats }         from '../context/CpStatsContext';
+import { useCpStats, formatSolved } from '../context/CpStatsContext';
 import SkeletonCard           from './SkeletonCard';
 import { CP_PROFILE_BUTTONS, LINKS } from '../data/constants';
 
@@ -149,9 +149,9 @@ export default function CompetitiveProgramming() {
         >
           <StatBlock
             label="Problems Solved"
-            value="250+"
+            value={loading ? null : formatSolved(data)}
             accent="mint"
-            loading={false}
+            loading={loading}
           />
           <StatBlock label="Contests Attended" value={data?.contestsAttended} accent="lavender" loading={loading} />
         </div>

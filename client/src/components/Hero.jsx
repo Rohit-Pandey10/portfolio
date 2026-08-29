@@ -12,7 +12,7 @@
  * context instance; no second fetch occurs.
  */
 
-import { useCpStats } from '../context/CpStatsContext';
+import { useCpStats, formatSolved } from '../context/CpStatsContext';
 import SkeletonCard   from './SkeletonCard';
 import { LINKS }      from '../data/constants';
 import HeroDevGrid    from './HeroDevGrid';
@@ -46,10 +46,12 @@ function StatCard({ label, value, accent, loading }) {
 }
 
 export default function Hero() {
-  const { data, loading } = useCpStats();
+  const { data, loading, error } = useCpStats();
 
-  const problemsSolved  = '250+';
-  const contestsAttended = data?.contestsAttended   ?? 22;
+  // formatSolved appends '+' for cache/fallback data to signal approximation;
+  // shows bare number for live platform-apis data; '\u2014' if absent.
+  const problemsSolved   = loading ? null : formatSolved(data);
+  const contestsAttended = data?.contestsAttended ?? 22;
 
   return (
     <section
@@ -192,9 +194,9 @@ export default function Hero() {
         >
           <StatCard
             label="Problems Solved"
-            value={problemsSolved}
+            value={problemsSolved ?? '—'}
             accent="mint"
-            loading={false}
+            loading={loading}
           />
           <StatCard
             label="Contests"
@@ -203,6 +205,21 @@ export default function Hero() {
             loading={loading}
           />
         </div>
+
+        {/* Subtle fallback notice — only shown when API failed */}
+        {!loading && error && (
+          <p
+            className="font-ui reveal"
+            style={{
+              fontSize: '0.7rem',
+              color: 'var(--color-muted)',
+              marginTop: '0.75rem',
+              animationDelay: '0.35s',
+            }}
+          >
+            ⚠ Showing approximate figures — live API unavailable
+          </p>
+        )}
 
         </div>{/* /hero-left */}
 

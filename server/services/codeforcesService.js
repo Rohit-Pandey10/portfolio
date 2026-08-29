@@ -14,7 +14,7 @@
 
 const axios = require('axios');
 
-const CF_HANDLE = 'Rohit_Pandey10'; // Codeforces username
+const CF_HANDLE = 'Rohit.Pandey'; // Codeforces main account (not Rohit_Pandey10 which is a new alt)
 const CF_BASE = 'https://codeforces.com/api';
 
 /**

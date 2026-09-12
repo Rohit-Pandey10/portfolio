@@ -53,9 +53,17 @@ async function getLeetCodeSolvedCount() {
   
   if (!stats) throw new Error('LeetCode: unexpected GraphQL response shape');
 
-  // Find the "All" difficulty entry
+  // Find the difficulty entries
   const allEntry = stats.find((s) => s.difficulty === 'All');
   const count = allEntry ? allEntry.count : null;
+  const easyEntry = stats.find((s) => s.difficulty === 'Easy');
+  const medEntry = stats.find((s) => s.difficulty === 'Medium');
+  const hardEntry = stats.find((s) => s.difficulty === 'Hard');
+  const difficultyBreakdown = {
+    easy: easyEntry ? easyEntry.count : 0,
+    medium: medEntry ? medEntry.count : 0,
+    hard: hardEntry ? hardEntry.count : 0,
+  };
 
   let leetcodeCalendar = {};
   if (calendarStr) {
@@ -74,7 +82,7 @@ async function getLeetCodeSolvedCount() {
     }
   }
 
-  return { leetcodeSolved: count, leetcodeCalendar };
+  return { leetcodeSolved: count, leetcodeCalendar, difficultyBreakdown };
 }
 
 /**
@@ -111,17 +119,23 @@ async function getLeetCodeContestData() {
   const ranking = data?.data?.userContestRanking;
   const history = data?.data?.userContestRankingHistory;
 
-  const rating = ranking?.rating ? Math.round(ranking.rating) : null;
+  const rating = ranking?.rating ? Math.round(ranking.rating) : 1500;
 
   let latestContest = null;
+  let attendedCount = ranking?.attendedContestsCount ?? null;
   if (history?.length) {
     const attended = history.filter((h) => h.attended);
     if (attended.length) {
       latestContest = attended[attended.length - 1]?.contest?.title || null;
+      if (attendedCount == null) attendedCount = attended.length;
     }
   }
 
-  return { leetcodeContestRating: rating, leetcodeLatestContest: latestContest };
+  return {
+    leetcodeContestRating: rating,
+    leetcodeLatestContest: latestContest,
+    leetcodeContests: attendedCount ?? 0,
+  };
 }
 
 /**
@@ -138,10 +152,12 @@ async function getLeetCodeStats() {
     solvedResult.status === 'fulfilled' ? solvedResult.value.leetcodeSolved : null;
   const leetcodeCalendar =
     solvedResult.status === 'fulfilled' ? solvedResult.value.leetcodeCalendar : {};
+  const difficultyBreakdown =
+    solvedResult.status === 'fulfilled' ? solvedResult.value.difficultyBreakdown : null;
   const contestData =
     contestResult.status === 'fulfilled'
       ? contestResult.value
-      : { leetcodeContestRating: null, leetcodeLatestContest: null };
+      : { leetcodeContestRating: null, leetcodeLatestContest: null, leetcodeContests: null };
 
   if (solvedResult.status === 'rejected') {
     console.warn('[LC] solved count failed:', solvedResult.reason?.message);
@@ -152,8 +168,10 @@ async function getLeetCodeStats() {
 
   return {
     leetcodeSolved,
+    leetcodeContests: contestData.leetcodeContests ?? null,
     leetcodeContestRating: contestData.leetcodeContestRating,
     leetcodeLatestContest: contestData.leetcodeLatestContest,
+    difficultyBreakdown,
     leetcodeCalendar,
   };
 }

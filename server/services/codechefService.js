@@ -64,8 +64,18 @@ async function getCodeChefStats() {
     }
   });
 
+  // ── Contests Attended ──────────────────────────────────────────────────
+  // Extracts both regular contests and DSA contests participated
+  const pageText = $('body').text();
+  const contestMatch = pageText.match(/No\.\s*of\s*Contests\s*Participated\s*:\s*(\d+)/i);
+  const dsaContestMatch = pageText.match(/No\.\s*of\s*DSA\s*Contests\s*Participated\s*:\s*(\d+)/i);
+  const regContests = contestMatch ? parseInt(contestMatch[1], 10) : 0;
+  const dsaContests = dsaContestMatch ? parseInt(dsaContestMatch[1], 10) : 0;
+  const codechefContests = (regContests || dsaContests) ? (regContests + dsaContests) : null;
+
   return {
     codechefSolved,
+    codechefContests,
     codechefRating,
     codechefMaxRating
   };

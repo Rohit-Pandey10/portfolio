@@ -27,8 +27,9 @@ exports.getCpStats = async (req, res) => {
       return null;
     });
 
-    // Check cache freshness
-    if (cachedDoc?.lastUpdated) {
+    // Check cache freshness (bypass if ?refresh=true is provided)
+    const forceRefresh = req.query.refresh === 'true';
+    if (!forceRefresh && cachedDoc?.lastUpdated) {
       const ageMs = Date.now() - new Date(cachedDoc.lastUpdated).getTime();
       const ageMins = ageMs / 1000 / 60;
 

@@ -21,13 +21,13 @@ A personal portfolio website for Rohit Pandey, a second-year Computer Engineerin
 - Only one real project exists: "MERN Authentication System" (Node.js, Express.js, MongoDB, JWT, bcrypt, MVC, tested with Postman). Never invent additional projects, companies, clients, or work history to fill out the page.
 - **Codeforces handle: `Rohit.Pandey`** (https://codeforces.com/profile/Rohit.Pandey). NOTE: `Rohit_Pandey10` is a NEW alt account (registered Aug 2025, 2 submissions) — do NOT use that handle for CF API calls.
 - CP fallback values (used only if every fetch tier fails — see §5 fetch chain):
-  - Problems Solved: 245+ (legacy approximation — replace with real sum once live; confirmed Aug 2026: LC 51 + CF ~140 + CC 54 = 245)
-  - Active Days: 89 (legacy static number — replace with real merged LeetCode + Codeforces activity-calendar count once available; see §5)
-  - Contests Attended: 23
-  - Difficulty Breakdown: Easy 29, Medium 21, Hard 1 (51 total DSA — LeetCode only)
+  - Problems Solved: 290 (LC 68 + CF 164 + CC 58 = 290)
+  - Active Days: 100+ (real merged LeetCode + Codeforces activity-calendar count)
+  - Contests Attended: 29 (CF 17 + LC 1 + CC 9 + AC 2 = 29)
+  - Difficulty Breakdown: Easy 42, Medium 25, Hard 1 (68 total DSA — LeetCode)
   - LeetCode Contest Rating: 1500 (Biweekly Contest 187)
-  - CodeChef: 1372 (max 1409)
-  - Codeforces: 935 (max 1199), title Newbie
+  - CodeChef: 1425 (max 1425)
+  - Codeforces: 1033 (max 1199), title Newbie
 - **Problems Solved = LeetCode solved + Codeforces solved + CodeChef solved, summed from each platform's own API/scrape.** (This replaced an earlier LC+CF-only rule that existed specifically to work around Codolio's inconsistent categorization — that reasoning no longer applies now that Codolio isn't the data source.)
 - **Active Days is derived from real activity-calendar data merged from LeetCode (`submissionCalendar`) and Codeforces (`user.status` submission timestamps).** CodeChef has no accessible daily-activity data, so it does not contribute to this stat — say so in a code comment, don't silently under-represent it as complete.
 - Never show AtCoder anywhere (stats or profile buttons).
@@ -69,7 +69,8 @@ project-root/
       codeforcesService.js       Official Codeforces public API — rating + solved count + submission history for activity calendar
       leetcodeService.js         LeetCode's unofficial public GraphQL endpoint — solved count, contest rating, submissionCalendar
       codechefService.js         No official public API — scrapes the public CodeChef profile page (same pattern LeetCode uses: unofficial, wrapped defensively, comment explaining why)
-      cpAggregator.js            Fetches all three services in parallel, merges results, and owns the fallback chain — the only service the controller calls
+      atcoderService.js          Official AtCoder user history endpoint — rated contests attended
+      cpAggregator.js            Fetches all platform services in parallel, merges results, and owns the fallback chain — the only service the controller calls
     config/
       db.js                       MongoDB connection setup
     server.js

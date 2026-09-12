@@ -11,23 +11,28 @@
 const { getCodeforcesStats } = require('./codeforcesService');
 const { getLeetCodeStats } = require('./leetcodeService');
 const { getCodeChefStats } = require('./codechefService');
+const { getAtCoderContests } = require('./atcoderService');
 
 // ─── Tier 4: Hardcoded fallback constants ────────────────────────────────────
 const HARDCODED_FALLBACK = {
-  totalProblemsSolved: 245,   // LC 51 + CF ~140 + CC 54, confirmed Aug 2026
-  leetcodeSolved: 51,
-  codeforcesSolved: 140,
-  codechefSolved: 54,
-  activeDays: 89,
-  contestsAttended: 23,
-  difficultyBreakdown: { easy: 29, medium: 21, hard: 1 },
+  totalProblemsSolved: 290,   // LC 68 + CF 164 + CC 58 = 290
+  leetcodeSolved: 68,
+  codeforcesSolved: 164,
+  codechefSolved: 58,
+  activeDays: 100,
+  contestsAttended: 29,       // CF 17 + LC 1 + CC 9 + AC 2 = 29
+  codeforcesContests: 17,
+  leetcodeContests: 1,
+  codechefContests: 9,
+  atcoderContests: 2,
+  difficultyBreakdown: { easy: 42, medium: 25, hard: 1 },
   leetcodeContestRating: 1500,
   leetcodeLatestContest: 'Biweekly Contest 187',
-  codechefRating: 1372,
-  codechefMaxRating: 1409,
-  codeforcesRating: 935,
+  codechefRating: 1425,
+  codechefMaxRating: 1425,
+  codeforcesRating: 1033,
   codeforcesMaxRating: 1199,
-  codeforcesTitle: 'Newbie',
+  codeforcesTitle: 'newbie',
   source: 'fallback',
   activityCalendar: {},
 };
@@ -47,7 +52,7 @@ function mergeCalendars(cfCal = {}, lcCal = {}) {
 /**
  * Merge platform data, filling missing fields from base (cache/fallback).
  */
-function mergePlatformData(base, cfStats, lcStats, ccStats) {
+function mergePlatformData(base, cfStats, lcStats, ccStats, acStats = {}) {
   const leetcodeSolved = lcStats.leetcodeSolved ?? base.leetcodeSolved;
   const codeforcesSolved = cfStats.codeforcesSolved ?? base.codeforcesSolved;
   const codechefSolved = ccStats.codechefSolved ?? base.codechefSolved;
@@ -57,6 +62,16 @@ function mergePlatformData(base, cfStats, lcStats, ccStats) {
   if (leetcodeSolved !== null || codeforcesSolved !== null || codechefSolved !== null) {
     totalProblemsSolved = (leetcodeSolved || 0) + (codeforcesSolved || 0) + (codechefSolved || 0);
   }
+
+  // Contests attended: calculate dynamically from each platform's live count, with fallback to base
+  const codeforcesContests = cfStats.codeforcesContests ?? base.codeforcesContests ?? 17;
+  const leetcodeContests = lcStats.leetcodeContests ?? base.leetcodeContests ?? 1;
+  const codechefContests = ccStats.codechefContests ?? base.codechefContests ?? 9;
+  const atcoderContests = acStats.atcoderContests ?? base.atcoderContests ?? 2;
+  const contestsAttended = codeforcesContests + leetcodeContests + codechefContests + atcoderContests;
+
+  // Difficulty breakdown from LeetCode
+  const difficultyBreakdown = lcStats.difficultyBreakdown ?? base.difficultyBreakdown;
 
   // Merge activity calendars
   // If both live APIs failed to return calendars, we fall back to the base calendar
@@ -75,6 +90,12 @@ function mergePlatformData(base, cfStats, lcStats, ccStats) {
     codechefSolved,
     activeDays,
     activityCalendar,
+    contestsAttended,
+    codeforcesContests,
+    leetcodeContests,
+    codechefContests,
+    atcoderContests,
+    difficultyBreakdown,
     leetcodeContestRating: lcStats.leetcodeContestRating ?? base.leetcodeContestRating,
     leetcodeLatestContest: lcStats.leetcodeLatestContest ?? base.leetcodeLatestContest,
     codeforcesRating: cfStats.codeforcesRating ?? base.codeforcesRating,
@@ -92,30 +113,36 @@ function mergePlatformData(base, cfStats, lcStats, ccStats) {
  */
 async function getStats(cachedDoc) {
   try {
-    console.log('[Aggregator] Fetching from platform APIs (Codeforces, LeetCode, CodeChef)');
-    const [cfResult, lcResult, ccResult] = await Promise.allSettled([
+    console.log('[Aggregator] Fetching from platform APIs (Codeforces, LeetCode, CodeChef, AtCoder)');
+    const [cfResult, lcResult, ccResult, acResult] = await Promise.allSettled([
       getCodeforcesStats(),
       getLeetCodeStats(),
-      getCodeChefStats()
+      getCodeChefStats(),
+      getAtCoderContests(),
     ]);
 
     const cfStats = cfResult.status === 'fulfilled' ? cfResult.value : {};
     const lcStats = lcResult.status === 'fulfilled' ? lcResult.value : {};
     const ccStats = ccResult.status === 'fulfilled' ? ccResult.value : {};
+    const acStats = acResult.status === 'fulfilled' ? acResult.value : {};
 
     const hasAnyData =
       cfStats.codeforcesSolved != null ||
       cfStats.codeforcesRating != null ||
+      cfStats.codeforcesContests != null ||
       lcStats.leetcodeSolved != null ||
       lcStats.leetcodeContestRating != null ||
+      lcStats.leetcodeContests != null ||
       ccStats.codechefSolved != null ||
-      ccStats.codechefRating != null;
+      ccStats.codechefRating != null ||
+      ccStats.codechefContests != null ||
+      acStats.atcoderContests != null;
 
     if (hasAnyData) {
       console.log('[Aggregator] API fetch success (partial or full)');
       // Base object initialized with hardcoded constants, overridden by cache if available
       const base = cachedDoc ? { ...HARDCODED_FALLBACK, ...cachedDoc } : { ...HARDCODED_FALLBACK };
-      return mergePlatformData(base, cfStats, lcStats, ccStats);
+      return mergePlatformData(base, cfStats, lcStats, ccStats, acStats);
     }
     console.warn('[Aggregator] No useful data from any live API');
   } catch (err) {

@@ -14,7 +14,7 @@
 
 import { useCpStats, formatSolved } from '../context/CpStatsContext';
 import SkeletonCard   from './SkeletonCard';
-import { LINKS }      from '../data/constants';
+import { LINKS, CP_FALLBACK } from '../data/constants';
 import HeroDevGrid    from './HeroDevGrid';
 
 function StatCard({ label, value, accent, loading }) {
@@ -51,7 +51,7 @@ export default function Hero() {
   // formatSolved appends '+' for cache/fallback data to signal approximation;
   // shows bare number for live platform-apis data; '\u2014' if absent.
   const problemsSolved   = loading ? null : formatSolved(data);
-  const contestsAttended = data?.contestsAttended ?? 22;
+  const contestsAttended = data?.contestsAttended ?? CP_FALLBACK.contestsAttended;
 
   return (
     <section

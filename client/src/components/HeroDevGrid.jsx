@@ -16,7 +16,7 @@
  */
 
 import { useCpStats, formatSolved } from '../context/CpStatsContext';
-import { SKILLS }     from '../data/constants';
+import { SKILLS, CP_FALLBACK } from '../data/constants';
 
 // ── Card 2: derive chip list from SKILLS (read-only, no mutation) ───────────
 // Pull one item per relevant category for the compact hero card.
@@ -162,7 +162,7 @@ function CpTeaserCard() {
           </div>
           <div>
             <p style={{ fontSize: '1.4rem', fontWeight: 600, color: 'var(--color-lavender)', lineHeight: 1 }}>
-              {data?.contestsAttended ?? 22}
+              {data?.contestsAttended ?? CP_FALLBACK.contestsAttended}
             </p>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.62rem', color: 'var(--color-muted)', marginTop: '0.25rem', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
               Contests

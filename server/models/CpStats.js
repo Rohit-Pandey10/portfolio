@@ -27,6 +27,10 @@ const CpStatsSchema = new mongoose.Schema(
     codechefSolved: { type: Number, default: 0 },
     activeDays: { type: Number, default: 0 },
     contestsAttended: { type: Number, default: 0 },
+    codeforcesContests: { type: Number, default: null },
+    codechefContests: { type: Number, default: null },
+    leetcodeContests: { type: Number, default: null },
+    atcoderContests: { type: Number, default: null },
     difficultyBreakdown: {
       easy: { type: Number, default: 0 },
       medium: { type: Number, default: 0 },

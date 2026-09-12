@@ -72,13 +72,28 @@ async function getCodeforcesSolvedCount() {
 }
 
 /**
- * Main export — fetches both info and solved count.
- * Returns a partial result if one of the two calls fails.
+ * Fetch rated contests attended on Codeforces.
+ */
+async function getCodeforcesContestCount() {
+  const url = `${CF_BASE}/user.rating?handle=${CF_HANDLE}`;
+  const { data } = await axios.get(url, { timeout: 8000 });
+
+  if (data.status !== 'OK') {
+    throw new Error(`Codeforces user.rating returned status: ${data.status}`);
+  }
+
+  return { codeforcesContests: Array.isArray(data.result) ? data.result.length : null };
+}
+
+/**
+ * Main export — fetches info, solved count, and contests attended.
+ * Returns a partial result if one of the calls fails.
  */
 async function getCodeforcesStats() {
-  const [infoResult, solvedResult] = await Promise.allSettled([
+  const [infoResult, solvedResult, contestResult] = await Promise.allSettled([
     getCodeforcesUserInfo(),
     getCodeforcesSolvedCount(),
+    getCodeforcesContestCount(),
   ]);
 
   const info = infoResult.status === 'fulfilled' ? infoResult.value : {};
@@ -86,6 +101,8 @@ async function getCodeforcesStats() {
     solvedResult.status === 'fulfilled' ? solvedResult.value.codeforcesSolved : null;
   const codeforcesCalendar =
     solvedResult.status === 'fulfilled' ? solvedResult.value.codeforcesCalendar : {};
+  const codeforcesContests =
+    contestResult.status === 'fulfilled' ? contestResult.value.codeforcesContests : null;
 
   if (infoResult.status === 'rejected') {
     console.warn('[CF] user.info failed:', infoResult.reason?.message);
@@ -93,9 +110,13 @@ async function getCodeforcesStats() {
   if (solvedResult.status === 'rejected') {
     console.warn('[CF] user.status failed:', solvedResult.reason?.message);
   }
+  if (contestResult.status === 'rejected') {
+    console.warn('[CF] user.rating failed:', contestResult.reason?.message);
+  }
 
   return {
     codeforcesSolved,
+    codeforcesContests,
     codeforcesRating: info.codeforcesRating ?? null,
     codeforcesMaxRating: info.codeforcesMaxRating ?? null,
     codeforcesTitle: info.codeforcesTitle ?? null,

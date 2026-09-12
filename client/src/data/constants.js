@@ -33,25 +33,25 @@ export const CP_PROFILE_BUTTONS = [
 ];
 
 // ── Hardcoded fallback CP stats (used only if all fetch tiers fail) ───────
-// NOTE: totalProblemsSolved (250) is a recent approximation (LeetCode + Codeforces
-// + CodeChef combined). It is used only as a last resort when every API tier
-// fails. Components display this as '250+' (source-aware formatting) to signal
-// it's an estimate, not a live count.
 export const CP_FALLBACK = {
-  totalProblemsSolved: 245,   // LC 51 + CF ~140 + CC 54, confirmed Aug 2026
-  leetcodeSolved: 51,
-  codeforcesSolved: 140,
-  codechefSolved: 54,
-  activeDays: 89,
-  contestsAttended: 23,
-  difficultyBreakdown: { easy: 29, medium: 21, hard: 1 },
+  totalProblemsSolved: 290,   // LC 68 + CF 164 + CC 58 = 290
+  leetcodeSolved: 68,
+  codeforcesSolved: 164,
+  codechefSolved: 58,
+  activeDays: 100,
+  contestsAttended: 29,       // CF 17 + LC 1 + CC 9 + AC 2 = 29
+  codeforcesContests: 17,
+  leetcodeContests: 1,
+  codechefContests: 9,
+  atcoderContests: 2,
+  difficultyBreakdown: { easy: 42, medium: 25, hard: 1 },
   leetcodeContestRating: 1500,
   leetcodeLatestContest: 'Biweekly Contest 187',
-  codechefRating: 1372,
-  codechefMaxRating: 1409,
-  codeforcesRating: 935,
+  codechefRating: 1425,
+  codechefMaxRating: 1425,
+  codeforcesRating: 1033,
   codeforcesMaxRating: 1199,
-  codeforcesTitle: 'Newbie',
+  codeforcesTitle: 'newbie',
   source: 'client-fallback',
 };
 

@@ -1,129 +1,403 @@
-# AGENTS.md — Rohit Pandey Portfolio
+# AGENTS.md — System Specification & Architectural Blueprint: Rohit Pandey Portfolio
 
-Read this file in full before doing anything else. It anchors every session to the same facts, stack, structure, and design system — don't re-derive or "improve" on these without being asked.
+> **Single Source of Truth** for autonomous AI coding agents, Pair Programmers, and engineers onboarding onto the `portfolio2_agy` codebase.
+> This document specifies system architecture, runtime data pipelines, design system tokens, data contracts, and verification protocols. Adhere strictly to these guidelines to preserve architectural integrity.
 
-## 1. Project summary
+---
 
-A personal portfolio website for Rohit Pandey, a second-year Computer Engineering student. MERN stack, MVC architecture on the backend, dark editorial visual theme. Full functional spec lives in the master prompt provided at project start — this file is the persistent reference that survives across sessions; the master prompt is the one-time brief.
+## 1. Executive Summary & Tech Architecture
 
-## 2. Ground-truth facts (do not invent or alter)
+### 1.1 Purpose & Scope
+The application is a high-performance, dark-editorial developer portfolio and live Competitive Programming (CP) telemetry hub for **Rohit Pandey** (B.Tech in Computer Engineering, Dwarkadas J. Sanghvi College of Engineering, Class of 2025–2029).
 
-- Name: Rohit Pandey
-- Program: B.Tech, Computer Engineering, 2025–2029 (second-year as of now)
-- College: Dwarkadas J. Sanghvi College of Engineering, Mumbai
-- CGPA: 9.45
-- Email: rohitpdev@gmail.com
-- Codolio profile: https://codolio.com/profile/Rohit_Pandey10 — this is now ONLY an external "view my full profile" link (still shown as a profile button). It is NOT a data source anymore; Codolio scraping was removed because it never reliably returned data.
-- GitHub: https://github.com/Rohit-Pandey10
-- LinkedIn: https://www.linkedin.com/in/rohit-pandey-964b1036a/
-- Do NOT display Rohit's phone number anywhere on the public site, even though it's on the resume PDF
-- There is no Resume/Download Resume feature on this site — it was intentionally removed. Don't re-add a resume button, section, or PDF link.
-- Real projects:
-  - "JakeResume — ATS LaTeX Resume Platform" (React, Node.js, Express, MongoDB, Tailwind CSS, LaTeX)
-  - "MERN Authentication System" (Node.js, Express.js, MongoDB, JWT, bcrypt, MVC, tested with Postman)
-  Never invent additional projects, companies, clients, or work history to fill out the page.
-- **Codeforces handle: `Rohit.Pandey`** (https://codeforces.com/profile/Rohit.Pandey). NOTE: `Rohit_Pandey10` is a NEW alt account (registered Aug 2025, 2 submissions) — do NOT use that handle for CF API calls.
-- CP fallback values (used only if every fetch tier fails — see §5 fetch chain):
-  - Problems Solved: 325 (LC 75 + CF 185 + CC 65 = 325)
-  - Active Days: 109+ (real merged LeetCode + Codeforces activity-calendar count)
-  - Contests Attended: 34 (CF 18 + LC 2 + CC 10 + AC 4 = 34)
-  - Difficulty Breakdown: Easy 48, Medium 26, Hard 1 (75 total DSA — LeetCode)
-  - LeetCode Contest Rating: 1500 (Biweekly Contest 191)
-  - CodeChef: 1426 (max 1426)
-  - Codeforces: 996 (max 1199), title Newbie
-- **Problems Solved = LeetCode solved + Codeforces solved + CodeChef solved, summed from each platform's own API/scrape.** (This replaced an earlier LC+CF-only rule that existed specifically to work around Codolio's inconsistent categorization — that reasoning no longer applies now that Codolio isn't the data source.)
-- **Active Days is derived from real activity-calendar data merged from LeetCode (`submissionCalendar`) and Codeforces (`user.status` submission timestamps).** CodeChef has no accessible daily-activity data, so it does not contribute to this stat — say so in a code comment, don't silently under-represent it as complete.
-- Never show AtCoder anywhere (stats or profile buttons).
+Beyond standard biographical information, the platform functions as an automated metrics hub that continuously syncs, aggregates, normalizes, and caches real-time problem-solving and contest telemetry from major competitive programming platforms (**Codeforces**, **LeetCode**, **CodeChef**, and **AtCoder**).
 
-## 3. Tech stack
+### 1.2 Monorepo Architecture Pattern
+The project is architected as a decoupled, two-tier monorepo without cross-package compilation overhead:
 
-MERN: MongoDB, Express.js, React.js, Node.js. Client and server are separate packages in one repo (two-package monorepo, not Next.js).
+```
+portfolio2_agy/
+├── client/                     # Frontend SPA (React 19, Vite, Tailwind CSS v4)
+│   ├── src/
+│   │   ├── components/         # Sectional and atomic UI components
+│   │   ├── context/            # React Context state layers (CpStatsContext)
+│   │   ├── data/               # Master static content & fallback baseline (constants.js)
+│   │   ├── hooks/              # Reusable viewport & interaction hooks (useScrollReveal)
+│   │   ├── pages/              # Single-page layout assembly (Home.jsx)
+│   │   └── styles/             # Tokenized design system (tokens.css, index.css)
+│   └── package.json            # Client scripts & dev dependencies
+│
+├── server/                     # Backend Microservice (Node.js, Express, Mongoose)
+│   ├── config/                 # MongoDB Atlas connection manager (db.js)
+│   ├── controllers/            # Thin HTTP controllers (statsController.js)
+│   ├── models/                 # Mongoose persistent cache schema (CpStats.js)
+│   ├── routes/                 # Express route definitions (statsRoutes.js)
+│   ├── services/               # Scrapers, API clients & Aggregator (cpAggregator.js)
+│   ├── package.json            # Server dependencies (Express, Axios, Cheerio, Mongoose)
+│   └── server.js               # Server entry point & serverless export
+│
+├── vercel.json                 # Monorepo unified serverless & SPA routing rules
+├── package.json                # Root orchestration scripts (install, build)
+└── AGENTS.md                   # This document
+```
 
-Before scaffolding, check the currently stable versions of Node (LTS), Express, Mongoose, React, Vite, and Tailwind CSS — don't assume versions from training data, they drift. Record whatever versions you actually install in the table below and keep it updated as the source of truth for this repo.
+### 1.3 Technology Stack
 
-| Package | Version pinned | Notes |
+| Layer | Technology | Key Dependencies & Version Notes |
 |---|---|---|
-| Node.js | _fill in_ | use LTS |
-| Express | _fill in_ | |
-| Mongoose | _fill in_ | |
-| React | _fill in_ | via Vite |
-| Vite | _fill in_ | |
-| Tailwind CSS | _fill in_ | |
+| **Frontend** | React 19 + Vite 8 | `react`, `react-dom`, `@vitejs/plugin-react`, `tailwindcss` (v4 with `@tailwindcss/vite`), `axios` |
+| **Backend** | Node.js (>=20 LTS) + Express 5 | `express` (v5), `cors`, `dotenv`, `axios`, `cheerio` (web scraping), `mongoose` (v9) |
+| **Database** | MongoDB Atlas | Singleton document cache with Mongoose schema validation |
+| **Deployment** | Vercel Serverless | Unified deployment using `@vercel/node` for `server/server.js` and `@vercel/static-build` for client |
 
-## 4. Folder structure (MVC monorepo — follow exactly)
+### 1.4 Unified Deployment Topology (`vercel.json`)
+The client SPA and server API share the same origin in production. Vercel serverless functions handle API routes, while all other requests map to the static client bundle:
 
-```
-project-root/
-  client/                        React app (Vite + Tailwind CSS)
-    src/
-      components/
-      pages/
-      hooks/
-      styles/
-      assets/
-  server/                        Express app (MVC)
-    controllers/
-      statsController.js         Handles req/res only — stays thin
-    models/
-      CpStats.js                 Mongoose schema: cached stats + lastUpdated
-    routes/
-      statsRoutes.js              GET /api/cp-stats
-    services/
-      codeforcesService.js       Official Codeforces public API — rating + solved count + submission history for activity calendar
-      leetcodeService.js         LeetCode's unofficial public GraphQL endpoint — solved count, contest rating, submissionCalendar
-      codechefService.js         No official public API — scrapes the public CodeChef profile page (same pattern LeetCode uses: unofficial, wrapped defensively, comment explaining why)
-      atcoderService.js          Official AtCoder user history endpoint — rated contests attended
-      cpAggregator.js            Fetches all platform services in parallel, merges results, and owns the fallback chain — the only service the controller calls
-    config/
-      db.js                       MongoDB connection setup
-    server.js
-  AGENTS.md                      This file
-  README.md
-  .env.example
+```json
+{
+  "version": 2,
+  "builds": [
+    { "src": "server/server.js", "use": "@vercel/node" },
+    { "src": "package.json", "use": "@vercel/static-build" }
+  ],
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/server/server.js" },
+    { "source": "/(.*)", "destination": "/$1" }
+  ]
+}
 ```
 
-## 5. Backend architecture rules
+- **Local Development Proxy:** Vite dev server (`client/vite.config.js`) proxies all `/api/*` requests to `http://localhost:5001`.
+- **Production Serverless:** `server/server.js` exports the `app` instance (`module.exports = app`), which Vercel wraps as an on-demand serverless function.
 
-- **Controllers stay thin.** Request/response handling only — no API calls, no scraping, no business logic. The controller calls `cpAggregator.getStats()` and nothing else for CP data.
-- **Each service owns exactly one platform.** `codeforcesService.js` (official API), `leetcodeService.js` (unofficial GraphQL), `codechefService.js` (unofficial profile scrape). None of them know about each other or about fallback logic. Codolio is no longer a data source anywhere in this codebase — it was removed because it never reliably returned data. The public Codolio profile link still exists as an external "view full profile" button elsewhere on the site; that's just a link, not a fetch.
-- **`cpAggregator.js` fetches all three services in parallel** (e.g. `Promise.allSettled`) rather than a sequential primary/secondary chain — one platform failing shouldn't block the other two from returning real data. Fallback order per field: live result → last cached MongoDB value for that field → hardcoded constant (§2). This is the only orchestration logic in the codebase; don't duplicate fallback branching inside the controller or a service.
-- **Active Days heatmap uses real data, not a fixed pattern.** `cpAggregator.js` merges LeetCode's `submissionCalendar` (date → count) with unique active days derived from Codeforces `user.status` submission timestamps into one calendar. CodeChef doesn't expose this, so it's excluded from the calendar (still counted in Problems Solved, just not in the daily heatmap) — note this in a code comment near the merge logic.
-- **Models are the cache.** `CpStats.js` stores the last successfully fetched stats (including the merged activity calendar) plus a `lastUpdated` timestamp. The controller checks freshness (e.g. under 15 minutes old) before deciding to call the aggregator again.
-- Config (Mongo connection string, etc.) lives in `.env`, never hardcoded. Keep `.env.example` in sync with whatever variables you add.
+---
 
-## 6. Design system (do not substitute a different palette or type pairing)
+## 2. Competitive Programming Sync Pipeline (`server/`)
 
-**Colors**
-- Background (Ink): `#121010`
-- Surface/Card (Charcoal): `#1C1A18`
-- Primary Text (Off-White): `#F5F3EF`
-- Secondary Text (Warm Grey): `#A39C92`
-- Muted Text: `#6E675E`
-- Accent Blush (pink — headline statements): `#F6C9D6`
-- Accent Mint (green — name treatment, "solved"/success states): `#BFEFD4`
-- Accent Lavender (primary CTA fill, links): `#D9CFF2`
-- Border: `#2C2A27`
+### 2.1 Multi-Tier Fault-Tolerant Architecture
+External competitive programming platforms lack unified APIs and frequently rate-limit or fail. The backend implements a 4-tier fallback pipeline guaranteeing **zero-downtime** and consistent response latencies:
 
-**Typography**
-- Display/Headline: bold condensed grotesk (Anton, Archivo Black, or Bebas Neue) — ALL CAPS, tight tracking, poster-scale, short phrases only (2–5 words per line)
-- Body/Narrative: Fraunces or Lora — serif, used for descriptions and paragraph copy
-- UI/Nav/Buttons: Manrope
-- Numbers/Stats/Code/Ratings: JetBrains Mono
+```
+[Client Request: GET /api/cp-stats]
+                │
+                ▼
+      ┌──────────────────┐
+      │  statsController │
+      └─────────┬────────┘
+                │
+         Is Mongo cache fresh? (<15 min)
+         ├── YES ──► Return Cached Document (source: 'cache')
+         └── NO
+                │
+                ▼
+      ┌───────────────────────────────┐
+      │  cpAggregator.js              │
+      │  (Promise.allSettled)         │
+      └───────┬───────┬───────┬───────┘
+              │       │       │       │
+              ▼       ▼       ▼       ▼
+         Codeforces LeetCode CodeChef AtCoder
+          (REST)   (GraphQL) (Scrape) (JSON)
+              │       │       │       │
+              └───────┴───────┴───────┘
+                          │
+          Did any platform succeed?
+          ├── YES ──► Merge with Base, Upsert Mongo, Return (source: 'platform-apis')
+          └── NO  ──► Check Mongo Cache Document
+                        ├── Exists ──► Return Stale Cache (source: 'cache')
+                        └── Empty  ──► Return HARDCODED_FALLBACK (source: 'fallback')
+```
 
-**Signature patterns**
-- Hero: giant name treatment ("ROHIT PANDEY") in Accent Mint, condensed display type, on the Ink background
-- Buttons: pill-shaped. Primary = solid Accent Lavender fill + dark text. Secondary = outlined/ghost.
-- CP section: dark cards, real Accent Mint contribution heatmap for Active Days (see §5 — merged LeetCode + Codeforces calendar, not a fixed pattern), Accent Lavender for contest/rating numbers
-- Projects section: case-study card pattern — pastel headline + serif description + colorful stylized mockup frame, scaled honestly to one real project (see §2)
-- Skills section: each skill shows a small colored dot (Mint = Comfortable, Lavender = Learning, Blush = Exploring) instead of a text pill, matching the legend already shown above the grid — no separate text label per skill
-- Education + Contact: sit side by side as a 1×2 grid on desktop/tablet ("Where I Study" left, "Let's Connect" right), stacking to a single column on mobile
+### 2.2 Platform Micro-Services
 
-If a task requires a UI decision this file doesn't cover, default to the pattern already established elsewhere on the page rather than introducing a new one.
+1. **Codeforces Service (`server/services/codeforcesService.js`):**
+   - **Handle:** `Rohit.Pandey` *(Warning: Never use `Rohit_Pandey10` for Codeforces API calls; that is an inactive alt account).*
+   - **Endpoints:**
+     - `https://codeforces.com/api/user.info?handles=Rohit.Pandey` &rarr; Retrieves `rating`, `maxRating`, and `rank`/`title` (`newbie`, etc.).
+     - `https://codeforces.com/api/user.status?handle=Rohit.Pandey` &rarr; Parses unique accepted problem IDs (`${problem.contestId}-${problem.index}`) and extracts timestamp dates for the daily contribution activity calendar.
+     - `https://codeforces.com/api/user.rating?handle=Rohit.Pandey` &rarr; Derives exact rated contest participation count.
 
-## 7. Session workflow (Antigravity-specific)
+2. **LeetCode Service (`server/services/leetcodeService.js`):**
+   - **Handle:** `Rohit_Pandey10`
+   - **Endpoint:** `https://leetcode.com/graphql` (Unofficial GraphQL query).
+   - **Data Extracted:**
+     - Solved counts total and broken down by difficulty (`easy`, `medium`, `hard`).
+     - Contest rating and latest contest title (`userContestRanking`, `userContestRankingHistory`).
+     - `submissionCalendar` JSON string (Unix epoch &rarr; count mapping) merged into the active days heatmap.
 
-- **Plan before building.** Propose folder structure and data flow, wait for approval, then implement in phases: (1) scaffold, (2) backend MVC + CP endpoint, (3) static sections, (4) frontend wiring + loading/fallback states, (5) verify.
-- **Verify locally after each phase.** `npm run build` in `client/`, and a smoke check against `GET /api/health` and `GET /api/codolio-stats` in `server/`. Fix failures before moving to the next phase.
-- **If a change introduces build errors across several steps,** use `/rewind` to return to the last stable checkpoint rather than patching forward blindly.
-- **If uncertain about scope or a missing fact** (e.g. a real GitHub URL, a new project to add), stop and ask rather than inventing a placeholder that looks like a real fact — placeholders must be obviously marked as such in code comments.
-- Don't reintroduce Next.js, a light theme, a blue/slate SaaS palette, a Resume/Download Resume feature, or Codolio as a data source (it's link-only now) — all were explicitly rejected earlier in this project.
+3. **CodeChef Service (`server/services/codechefService.js`):**
+   - **Handle:** `rohit_pandey10`
+   - **Endpoint:** `https://www.codechef.com/users/rohit_pandey10` (HTTP scrape via Cheerio).
+   - **Extraction Logic:**
+     - Current rating extracted from `.rating-number`.
+     - Peak rating extracted from `.rating-header small` (first instance representing contest rating).
+     - Solved problem count extracted by finding `.rating-data-section.problems-solved h3` containing text `"Solved"`.
+     - Contests count extracted from contest history table or `.contest-participated-count`.
+
+4. **AtCoder Service (`server/services/atcoderService.js`):**
+   - **Handle:** `rohitpandey10`
+   - **Endpoint:** `https://atcoder.jp/users/rohitpandey10/history/json`
+   - **Data Extracted:** Rated contest count (`data.filter(c => c.IsRated).length`).
+   - **Cardinal Rule:** Per design requirements, **never display AtCoder as a rating card or profile button in the UI**. Its participation count only aggregates into the `contestsAttended` global metric.
+
+### 2.3 Persistent Cache Model (`server/models/CpStats.js`)
+MongoDB acts strictly as a cache. The controller reads from and upserts a singleton document (`findLatest`):
+
+```javascript
+const CpStatsSchema = new mongoose.Schema({
+  totalProblemsSolved:   { type: Number, default: 0 },
+  leetcodeSolved:        { type: Number, default: 0 },
+  codeforcesSolved:      { type: Number, default: 0 },
+  codechefSolved:        { type: Number, default: 0 },
+  activeDays:            { type: Number, default: 0 },
+  contestsAttended:      { type: Number, default: 0 },
+  codeforcesContests:    { type: Number, default: null },
+  codechefContests:      { type: Number, default: null },
+  leetcodeContests:      { type: Number, default: null },
+  atcoderContests:       { type: Number, default: null },
+  difficultyBreakdown: {
+    easy:   { type: Number, default: 0 },
+    medium: { type: Number, default: 0 },
+    hard:   { type: Number, default: 0 },
+  },
+  leetcodeContestRating: { type: Number, default: null },
+  leetcodeLatestContest: { type: String, default: null },
+  codechefRating:        { type: Number, default: null },
+  codechefMaxRating:     { type: Number, default: null },
+  codeforcesRating:      { type: Number, default: null },
+  codeforcesMaxRating:   { type: Number, default: null },
+  codeforcesTitle:       { type: String, default: null },
+  activityCalendar:      { type: mongoose.Schema.Types.Mixed, default: {} },
+  lastUpdated:           { type: Date, default: Date.now },
+  source: {
+    type: String,
+    enum: ['codolio', 'platform-apis', 'cache', 'fallback'],
+    default: 'fallback'
+  }
+});
+```
+
+### 2.4 Aggregated Metrics Formulas
+- **`totalProblemsSolved`** = `leetcodeSolved` + `codeforcesSolved` + `codechefSolved`.
+- **`contestsAttended`** = `codeforcesContests` + `leetcodeContests` + `codechefContests` + `atcoderContests`.
+- **`activeDays`** = Total unique dates derived from merging LeetCode's `submissionCalendar` with Codeforces submission timestamps. *(Note: CodeChef does not expose daily telemetry).*
+
+---
+
+## 3. Frontend Component & State Hierarchy (`client/src/`)
+
+### 3.1 Architecture Overview
+
+```
+                      App.jsx
+                         │
+                <CpStatsProvider>
+                         │
+                     Home.jsx
+                         │
+     ┌───────────┬───────┴───────┬────────────┬───────────┐
+     ▼           ▼               ▼            ▼           ▼
+ Navbar.jsx   Hero.jsx      Skills.jsx    Competitive  Projects.jsx
+     │           │                            Programming      │
+     │      HeroDevGrid.jsx                       │      ProjectCard
+     │           │                                │           │
+     │     useCpStats()                     useCpStats()  LatexResumeMockup
+     │                                           │        TerminalMockup
+     ▼                                           ▼
+[External Links]                           [Rating Cards,
+                                            Heatmap & Stats]
+```
+
+### 3.2 State Management (`CpStatsContext.jsx`)
+- **Single Fetch Lifecycle:** Fetches `/api/cp-stats` **once** when `<CpStatsProvider>` mounts. Both `HeroDevGrid.jsx` and `CompetitiveProgramming.jsx` consume from this context with zero redundant network requests.
+- **Formatting Protocol (`formatSolved`):**
+  - Live data (`source === 'platform-apis'`) renders exact integer (e.g. `325`).
+  - Cached or fallback data renders with a plus indicator (e.g. `325+`).
+  - Unset or loading renders em-dash (`—`).
+
+### 3.3 Static Master Data (`constants.js`)
+All immutable portfolio data lives in `client/src/data/constants.js`:
+- **`PROJECTS` Array:** Master array of portfolio works.
+  - Project 1: **JakeResume — ATS LaTeX Resume Platform** (Top featured, live full-stack application with interactive LaTeX generator and compiler mockup).
+  - Project 2: **MERN Authentication System** (Backend MVC security architecture with JWT, bcrypt, and Postman terminal mockup).
+- **`SKILLS` Array:** Grouped by category (`Languages`, `Frontend`, `Backend & DB`, `Tools & Concepts`). Each item has `{ name, level }` where `level` maps to `'Comfortable'` (Mint), `'Learning'` (Lavender), or `'Exploring'` (Blush).
+- **`CP_PROFILE_BUTTONS`:** Outbound links to external profiles (`LeetCode`, `CodeChef`, `Codeforces`, `Codolio`). *(AtCoder is omitted).*
+- **`CP_FALLBACK`:** Client-side fail-safe values used if the backend is unreachable.
+
+### 3.4 Key Component Specifications
+- **`Projects.jsx`:**
+  - Case-study cards with responsive dual-pane layout (`1.18fr 0.82fr` desktop, stacking on tablet/mobile).
+  - Renders category pill, title, tech tags, narrative paragraph, discrete accomplishment bullets (`→`), and CTA action buttons (`Live App ↗` and `GitHub Repo ↗`).
+  - **Dynamic Mockup Frames:**
+    - For `jakeresume`: Renders `LatexResumeMockup` showing real-time line ceiling (`42/48 lines`), ATS Score gauge (`100%`), syntax-highlighted LaTeX AST, and compilation status.
+    - For `mern-auth`: Renders `TerminalMockup` showing curl commands and JSON API response payloads.
+- **`CompetitiveProgramming.jsx`:**
+  - Platform rating cards (Codeforces rating & rank title, LeetCode rating & contest name, CodeChef stars & division rating).
+  - Solved problems difficulty breakdown (Easy, Medium, Hard).
+  - Live contribution heatmap rendering merged active dates.
+- **`useScrollReveal.js`:**
+  - Native `IntersectionObserver` observing all `.reveal` DOM elements and toggling the `.visible` animation class on viewport entry.
+
+---
+
+## 4. Design System & Styling Tokens
+
+### 4.1 Color Palette (`styles/tokens.css`)
+
+```css
+:root {
+  /* Surface & Base */
+  --color-ink:        #121010;   /* Master background */
+  --color-charcoal:   #1C1A18;   /* Card surface */
+  --color-border:     #2C2A27;   /* Structural dividers & borders */
+
+  /* Typography */
+  --color-text:       #F5F3EF;   /* Primary off-white */
+  --color-secondary:  #A39C92;   /* Secondary warm grey */
+  --color-muted:      #6E675E;   /* Muted captions & subtitles */
+
+  /* Accents */
+  --color-mint:       #BFEFD4;   /* Success, solved problems, name highlights */
+  --color-blush:      #F6C9D6;   /* Display headlines, warnings */
+  --color-lavender:   #D9CFF2;   /* Primary buttons, links, ratings */
+}
+```
+
+### 4.2 Typography Hierarchy
+- **Display Headlines:** Bold condensed sans-serif (`Anton`, `Archivo Black`) — UPPERCASE, poster-scale, negative tracking (`.headline-display`).
+- **Body & Narrative:** Serif (`Lora`, `Georgia`) — used for project descriptions and story paragraphs (`.font-body`).
+- **UI, Nav & Buttons:** Clean sans-serif (`Manrope`) (`.font-ui`).
+- **Telemetry, Code & Ratings:** Monospaced (`JetBrains Mono`) (`.font-mono`).
+
+---
+
+## 5. Key Data Contracts & Schemas
+
+### 5.1 Project Data Contract (`constants.js`)
+
+```typescript
+interface Project {
+  id: string;                     // Unique identifier (e.g., 'jakeresume', 'mern-auth')
+  title: string;                  // Display title with descriptor
+  category: string;               // e.g., 'Full Stack / Developer Tooling'
+  description: string;            // Narrative overview (serif font)
+  tags: string[];                 // Technology pills (e.g., ['React', 'Node.js', 'LaTeX'])
+  tech?: string[];                // Legacy alias for tags
+  highlights: string[];           // Detailed accomplishments with bullet arrows
+  bullets?: string[];             // Legacy alias for highlights
+  liveUrl?: string | null;        // Deployed application URL (or null for backend-only)
+  githubUrl?: string | null;      // Source repository URL (or null)
+  liveLink?: string | null;       // Alias for liveUrl
+  githubLink?: string | null;     // Alias for githubUrl
+  featured: boolean;              // Indicates top showcase status
+}
+```
+
+### 5.2 API Stats Response Contract (`GET /api/cp-stats`)
+
+```typescript
+interface ApiResponse {
+  success: boolean;
+  data: {
+    totalProblemsSolved: number;
+    leetcodeSolved: number;
+    codeforcesSolved: number;
+    codechefSolved: number;
+    activeDays: number;
+    contestsAttended: number;
+    codeforcesContests: number | null;
+    codechefContests: number | null;
+    leetcodeContests: number | null;
+    atcoderContests: number | null;
+    difficultyBreakdown: {
+      easy: number;
+      medium: number;
+      hard: number;
+    };
+    leetcodeContestRating: number | null;
+    leetcodeLatestContest: string | null;
+    codechefRating: number | null;
+    codechefMaxRating: number | null;
+    codeforcesRating: number | null;
+    codeforcesMaxRating: number | null;
+    codeforcesTitle: string | null;
+    activityCalendar: Record<string, number>; // "YYYY-MM-DD": submissionCount
+    lastUpdated: string;                     // ISO Timestamp
+    source: 'platform-apis' | 'cache' | 'fallback';
+  };
+}
+```
+
+---
+
+## 6. Ground-Truth Facts & Invariant Rules
+
+Any coding agent working on this codebase **must strictly observe the following rules**:
+
+1. **Identity & Education:**
+   - Name: Rohit Pandey
+   - Degree: B.Tech in Computer Engineering (2025–2029)
+   - Institution: Dwarkadas J. Sanghvi College of Engineering, Mumbai
+   - CGPA: 9.45
+   - Contact Email: `rohitpdev@gmail.com`
+   - **Do NOT publish Rohit's phone number** on the website under any circumstance.
+2. **Resume Feature Removal:**
+   - There is **no Resume / Download Resume button** on this portfolio. It was intentionally omitted. Do not re-introduce resume download buttons.
+3. **Project Authenticity:**
+   - Only real projects created by Rohit may be listed. Never invent hypothetical projects, corporate case studies, or mock clients. Current authentic projects:
+     1. **JakeResume — ATS LaTeX Resume Platform**
+     2. **MERN Authentication System**
+4. **Competitive Programming Constraints:**
+   - **Codeforces handle is `Rohit.Pandey`** (do not use `Rohit_Pandey10`).
+   - **AtCoder rule:** AtCoder rated contests count toward `contestsAttended`, but **never render an AtCoder rating card or button in the UI**.
+   - **Codolio rule:** Codolio is treated exclusively as an outbound profile link. Codolio scraping was deprecated and removed due to instability.
+
+---
+
+## 7. Development Runbook & Verification Protocol
+
+### 7.1 Local Development Setup
+
+1. **Install Dependencies:**
+   ```bash
+   # From root
+   npm run install
+   ```
+
+2. **Run Backend Microservice:**
+   ```bash
+   cd server
+   npm run dev
+   # Runs on http://localhost:5001 with nodemon
+   # Health check: http://localhost:5001/api/health
+   # Stats check:  http://localhost:5001/api/cp-stats
+   ```
+
+3. **Run Frontend Client:**
+   ```bash
+   cd client
+   npm run dev
+   # Runs on http://localhost:5173
+   # Proxies /api requests to localhost:5001
+   ```
+
+### 7.2 Pre-Commit Verification Checklist
+
+Before pushing changes or opening a pull request, execute the following commands in sequence:
+
+```bash
+# 1. Verify Client TypeScript & Vite Production Bundle
+cd client && npm run build
+# Must exit with code 0 and zero bundle/syntax errors.
+
+# 2. Verify Backend Endpoints
+curl -s http://localhost:5001/api/health
+# Expected: {"status":"ok","timestamp":"..."}
+
+curl -s http://localhost:5001/api/cp-stats
+# Expected: {"success":true,"data":{...}}
+
+# 3. Verify Vercel Routing Configuration
+cat vercel.json
+# Ensure rewrites map /api/(.*) -> /server/server.js and catch-all to SPA.
+```

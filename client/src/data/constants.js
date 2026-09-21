@@ -34,22 +34,22 @@ export const CP_PROFILE_BUTTONS = [
 
 // ── Hardcoded fallback CP stats (used only if all fetch tiers fail) ───────
 export const CP_FALLBACK = {
-  totalProblemsSolved: 290,   // LC 68 + CF 164 + CC 58 = 290
-  leetcodeSolved: 68,
-  codeforcesSolved: 164,
-  codechefSolved: 58,
-  activeDays: 100,
-  contestsAttended: 29,       // CF 17 + LC 1 + CC 9 + AC 2 = 29
-  codeforcesContests: 17,
-  leetcodeContests: 1,
-  codechefContests: 9,
-  atcoderContests: 2,
-  difficultyBreakdown: { easy: 42, medium: 25, hard: 1 },
+  totalProblemsSolved: 325,   // LC 75 + CF 185 + CC 65 = 325
+  leetcodeSolved: 75,
+  codeforcesSolved: 185,
+  codechefSolved: 65,
+  activeDays: 109,
+  contestsAttended: 34,       // CF 18 + LC 2 + CC 10 + AC 4 = 34
+  codeforcesContests: 18,
+  leetcodeContests: 2,
+  codechefContests: 10,
+  atcoderContests: 4,
+  difficultyBreakdown: { easy: 48, medium: 26, hard: 1 },
   leetcodeContestRating: 1500,
-  leetcodeLatestContest: 'Biweekly Contest 187',
-  codechefRating: 1425,
-  codechefMaxRating: 1425,
-  codeforcesRating: 1033,
+  leetcodeLatestContest: 'Biweekly Contest 191',
+  codechefRating: 1426,
+  codechefMaxRating: 1426,
+  codeforcesRating: 996,
   codeforcesMaxRating: 1199,
   codeforcesTitle: 'newbie',
   source: 'client-fallback',
@@ -92,6 +92,7 @@ export const SKILLS = [
       { name: 'GitHub',  level: 'Comfortable' },
       { name: 'Postman', level: 'Comfortable' },
       { name: 'VS Code', level: 'Comfortable' },
+      { name: 'LaTeX',   level: 'Exploring'   },
       { name: 'REST APIs',         level: 'Comfortable' },
       { name: 'MVC Architecture',  level: 'Comfortable' },
       { name: 'JWT Auth',          level: 'Comfortable' },
@@ -104,9 +105,39 @@ export const SKILLS = [
 // ── Projects ──────────────────────────────────────────────────────────────
 export const PROJECTS = [
   {
+    id: 'jakeresume',
+    title: 'JakeResume — ATS LaTeX Resume Platform',
+    category: 'Full Stack / Developer Tooling',
+    description:
+      'A full-stack resume platform engineered to eliminate manual LaTeX formatting. Features client-side reactive LaTeX generation, bullet-level toggles, an atomic special-character sanitization engine, real-time 1-page visual budget gauges, and a 3-tier compilation architecture.',
+    tags: ['React', 'Node.js', 'Express', 'MongoDB', 'Tailwind CSS', 'LaTeX'],
+    tech: ['React', 'Node.js', 'Express', 'MongoDB', 'Tailwind CSS', 'LaTeX'],
+    highlights: [
+      "Client-side reactive LaTeX generator converting dynamic profile trees into authentic single-column Jake's Resume markup with zero input delay.",
+      '3-tier resilient compilation engine (Express proxy to remote pdflatex via latexonline.cc, client-side .tex download, and direct 1-click Overleaf form dispatch).',
+      'Deterministic single-pass regex escaping utility to neutralize reserved LaTeX characters (#, $, &, _, ^, \\) and embed glyphtounicode macros for ATS readability.',
+      'Zero-compute AI ingestion pipeline to sanitize unstructured LLM extraction payloads and normalize nested bullet toggles.',
+      'Real-time visual page budget estimator (48-line ceiling) preventing multi-page layout spills.',
+    ],
+    bullets: [
+      "Client-side reactive LaTeX generator converting dynamic profile trees into authentic single-column Jake's Resume markup with zero input delay.",
+      '3-tier resilient compilation engine (Express proxy to remote pdflatex via latexonline.cc, client-side .tex download, and direct 1-click Overleaf form dispatch).',
+      'Deterministic single-pass regex escaping utility to neutralize reserved LaTeX characters (#, $, &, _, ^, \\) and embed glyphtounicode macros for ATS readability.',
+      'Zero-compute AI ingestion pipeline to sanitize unstructured LLM extraction payloads and normalize nested bullet toggles.',
+      'Real-time visual page budget estimator (48-line ceiling) preventing multi-page layout spills.',
+    ],
+    liveUrl: 'https://resume-builder-iota-bice.vercel.app/',
+    githubUrl: 'https://github.com/Rohit-Pandey10/resume_agy',
+    liveLink: 'https://resume-builder-iota-bice.vercel.app/',
+    githubLink: 'https://github.com/Rohit-Pandey10/resume_agy',
+    featured: true,
+  },
+  {
     id: 'mern-auth',
     title: 'MERN Authentication System',
+    category: 'Backend / Security',
     tech: ['Node.js', 'Express.js', 'MongoDB'],
+    tags: ['Node.js', 'Express.js', 'MongoDB'],
     description:
       'Backend authentication system using Node.js, Express.js, and MongoDB.',
     bullets: [
@@ -115,9 +146,18 @@ export const PROJECTS = [
       'Followed MVC architecture',
       'Tested APIs using Postman',
     ],
+    highlights: [
+      'Built REST APIs for user authentication',
+      'Used JWT and bcrypt for secure login/signup',
+      'Followed MVC architecture',
+      'Tested APIs using Postman',
+    ],
     // No live link — backend-only project tested via Postman
     githubLink: null,
     liveLink: null,
+    githubUrl: null,
+    liveUrl: null,
+    featured: false,
   },
 ];
 

@@ -15,22 +15,22 @@ const { getAtCoderContests } = require('./atcoderService');
 
 // ─── Tier 4: Hardcoded fallback constants ────────────────────────────────────
 const HARDCODED_FALLBACK = {
-  totalProblemsSolved: 290,   // LC 68 + CF 164 + CC 58 = 290
-  leetcodeSolved: 68,
-  codeforcesSolved: 164,
-  codechefSolved: 58,
-  activeDays: 100,
-  contestsAttended: 29,       // CF 17 + LC 1 + CC 9 + AC 2 = 29
-  codeforcesContests: 17,
-  leetcodeContests: 1,
-  codechefContests: 9,
-  atcoderContests: 2,
-  difficultyBreakdown: { easy: 42, medium: 25, hard: 1 },
+  totalProblemsSolved: 325,   // LC 75 + CF 185 + CC 65 = 325
+  leetcodeSolved: 75,
+  codeforcesSolved: 185,
+  codechefSolved: 65,
+  activeDays: 109,
+  contestsAttended: 34,       // CF 18 + LC 2 + CC 10 + AC 4 = 34
+  codeforcesContests: 18,
+  leetcodeContests: 2,
+  codechefContests: 10,
+  atcoderContests: 4,
+  difficultyBreakdown: { easy: 48, medium: 26, hard: 1 },
   leetcodeContestRating: 1500,
-  leetcodeLatestContest: 'Biweekly Contest 187',
-  codechefRating: 1425,
-  codechefMaxRating: 1425,
-  codeforcesRating: 1033,
+  leetcodeLatestContest: 'Biweekly Contest 191',
+  codechefRating: 1426,
+  codechefMaxRating: 1426,
+  codeforcesRating: 996,
   codeforcesMaxRating: 1199,
   codeforcesTitle: 'newbie',
   source: 'fallback',
@@ -64,10 +64,10 @@ function mergePlatformData(base, cfStats, lcStats, ccStats, acStats = {}) {
   }
 
   // Contests attended: calculate dynamically from each platform's live count, with fallback to base
-  const codeforcesContests = cfStats.codeforcesContests ?? base.codeforcesContests ?? 17;
-  const leetcodeContests = lcStats.leetcodeContests ?? base.leetcodeContests ?? 1;
-  const codechefContests = ccStats.codechefContests ?? base.codechefContests ?? 9;
-  const atcoderContests = acStats.atcoderContests ?? base.atcoderContests ?? 2;
+  const codeforcesContests = cfStats.codeforcesContests ?? base.codeforcesContests ?? 18;
+  const leetcodeContests = lcStats.leetcodeContests ?? base.leetcodeContests ?? 2;
+  const codechefContests = ccStats.codechefContests ?? base.codechefContests ?? 10;
+  const atcoderContests = acStats.atcoderContests ?? base.atcoderContests ?? 4;
   const contestsAttended = codeforcesContests + leetcodeContests + codechefContests + atcoderContests;
 
   // Difficulty breakdown from LeetCode

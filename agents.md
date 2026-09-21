@@ -18,16 +18,19 @@ A personal portfolio website for Rohit Pandey, a second-year Computer Engineerin
 - LinkedIn: https://www.linkedin.com/in/rohit-pandey-964b1036a/
 - Do NOT display Rohit's phone number anywhere on the public site, even though it's on the resume PDF
 - There is no Resume/Download Resume feature on this site — it was intentionally removed. Don't re-add a resume button, section, or PDF link.
-- Only one real project exists: "MERN Authentication System" (Node.js, Express.js, MongoDB, JWT, bcrypt, MVC, tested with Postman). Never invent additional projects, companies, clients, or work history to fill out the page.
+- Real projects:
+  - "JakeResume — ATS LaTeX Resume Platform" (React, Node.js, Express, MongoDB, Tailwind CSS, LaTeX)
+  - "MERN Authentication System" (Node.js, Express.js, MongoDB, JWT, bcrypt, MVC, tested with Postman)
+  Never invent additional projects, companies, clients, or work history to fill out the page.
 - **Codeforces handle: `Rohit.Pandey`** (https://codeforces.com/profile/Rohit.Pandey). NOTE: `Rohit_Pandey10` is a NEW alt account (registered Aug 2025, 2 submissions) — do NOT use that handle for CF API calls.
 - CP fallback values (used only if every fetch tier fails — see §5 fetch chain):
-  - Problems Solved: 290 (LC 68 + CF 164 + CC 58 = 290)
-  - Active Days: 100+ (real merged LeetCode + Codeforces activity-calendar count)
-  - Contests Attended: 29 (CF 17 + LC 1 + CC 9 + AC 2 = 29)
-  - Difficulty Breakdown: Easy 42, Medium 25, Hard 1 (68 total DSA — LeetCode)
-  - LeetCode Contest Rating: 1500 (Biweekly Contest 187)
-  - CodeChef: 1425 (max 1425)
-  - Codeforces: 1033 (max 1199), title Newbie
+  - Problems Solved: 325 (LC 75 + CF 185 + CC 65 = 325)
+  - Active Days: 109+ (real merged LeetCode + Codeforces activity-calendar count)
+  - Contests Attended: 34 (CF 18 + LC 2 + CC 10 + AC 4 = 34)
+  - Difficulty Breakdown: Easy 48, Medium 26, Hard 1 (75 total DSA — LeetCode)
+  - LeetCode Contest Rating: 1500 (Biweekly Contest 191)
+  - CodeChef: 1426 (max 1426)
+  - Codeforces: 996 (max 1199), title Newbie
 - **Problems Solved = LeetCode solved + Codeforces solved + CodeChef solved, summed from each platform's own API/scrape.** (This replaced an earlier LC+CF-only rule that existed specifically to work around Codolio's inconsistent categorization — that reasoning no longer applies now that Codolio isn't the data source.)
 - **Active Days is derived from real activity-calendar data merged from LeetCode (`submissionCalendar`) and Codeforces (`user.status` submission timestamps).** CodeChef has no accessible daily-activity data, so it does not contribute to this stat — say so in a code comment, don't silently under-represent it as complete.
 - Never show AtCoder anywhere (stats or profile buttons).

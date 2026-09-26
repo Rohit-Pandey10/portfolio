@@ -100,7 +100,10 @@ The `/api/codolio-stats` endpoint uses a 4-tier fallback chain:
 - **About** — Personal summary
 - **Skills** — Grouped by category with honest proficiency labels
 - **Competitive Programming** — Live stats dashboard with heatmap
-- **Projects** — MERN Auth System case-study card
+- **Projects** — Featured case-study cards with responsive dual-pane layout, interactive browser & terminal mockups, and live deployment links:
+  - **BrandLoom — AI Brand Strategy & Marketing Platform**: Adaptive Socratic dialogue engine, dual-LLM pipeline (Groq + Gemini failover), and design token synthesizer with live viewport preview ([brand-loom.vercel.app](https://brand-loom.vercel.app/)).
+  - **JakeResume — ATS LaTeX Resume Platform**: Full-stack resume builder with client-side reactive LaTeX generation, ATS scoring, and 3-tier compilation engine ([jake-resume-builder10.vercel.app](https://jake-resume-builder10.vercel.app/)).
+  - **MERN Authentication System**: Backend MVC authentication system with JWT and bcrypt password hashing.
 - **Education** — D. J. Sanghvi College, B.Tech CE 2025–2029
 - **Contact** — Email, GitHub, LinkedIn
 

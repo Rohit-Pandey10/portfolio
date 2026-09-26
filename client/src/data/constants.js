@@ -105,13 +105,42 @@ export const SKILLS = [
 // ── Projects ──────────────────────────────────────────────────────────────
 export const PROJECTS = [
   {
+    id: 'brandloom',
+    title: 'BrandLoom — AI Brand Strategy & Marketing Platform',
+    image: '/brandloom-preview.png',
+    category: 'Full Stack / Hackathon Project',
+    description:
+      'An adaptive Socratic brand architect and design token synthesizer that interviews founders to formulate defensible positioning, verbal identity, and production-ready design tokens.',
+    tags: ['MERN Stack', 'Tailwind CSS', 'LLM Integration'],
+    tech: ['MERN Stack', 'Tailwind CSS', 'LLM Integration'],
+    highlights: [
+      'Designed an adaptive Socratic dialogue engine that interviews founders to surface positioning, tone, and customer insight before generating any assets — rather than a single-prompt-to-output flow.',
+      "Architected a dual-LLM pipeline (Groq's Llama 3.3 70B as primary, Gemini as fallback) so brand generation stays resilient to rate limits or provider outages.",
+      'Built a fault-tolerant data layer — MongoDB Atlas with automatic local-JSON fallback — so the app degrades gracefully instead of failing when the database is unreachable.',
+      "Tuned the prompt-engineering layer to personalize each generated brand kit to the founder's actual input, avoiding generic templated output.",
+      'Shipped a full React 18 + Vite + Tailwind client and Node/Express API within a 24-hour hackathon window, following a custom design system for visual consistency across every generated asset.',
+    ],
+    bullets: [
+      'Designed an adaptive Socratic dialogue engine that interviews founders to surface positioning, tone, and customer insight before generating any assets — rather than a single-prompt-to-output flow.',
+      "Architected a dual-LLM pipeline (Groq's Llama 3.3 70B as primary, Gemini as fallback) so brand generation stays resilient to rate limits or provider outages.",
+      'Built a fault-tolerant data layer — MongoDB Atlas with automatic local-JSON fallback — so the app degrades gracefully instead of failing when the database is unreachable.',
+      "Tuned the prompt-engineering layer to personalize each generated brand kit to the founder's actual input, avoiding generic templated output.",
+      'Shipped a full React 18 + Vite + Tailwind client and Node/Express API within a 24-hour hackathon window, following a custom design system for visual consistency across every generated asset.',
+    ],
+    liveUrl: 'https://brand-loom.vercel.app/',
+    githubUrl: 'https://github.com/Rohit-Pandey10/BrandLoom',
+    liveLink: 'https://brand-loom.vercel.app/',
+    githubLink: 'https://github.com/Rohit-Pandey10/BrandLoom',
+    featured: true,
+  },
+  {
     id: 'jakeresume',
     title: 'JakeResume — ATS LaTeX Resume Platform',
     category: 'Full Stack / Developer Tooling',
     description:
       'A full-stack resume platform engineered to eliminate manual LaTeX formatting. Features client-side reactive LaTeX generation, bullet-level toggles, an atomic special-character sanitization engine, real-time 1-page visual budget gauges, and a 3-tier compilation architecture.',
-    tags: ['React', 'Node.js', 'Express', 'MongoDB', 'Tailwind CSS', 'LaTeX'],
-    tech: ['React', 'Node.js', 'Express', 'MongoDB', 'Tailwind CSS', 'LaTeX'],
+    tags: ['MERN Stack', 'Tailwind CSS', 'LaTeX'],
+    tech: ['MERN Stack', 'Tailwind CSS', 'LaTeX'],
     highlights: [
       "Client-side reactive LaTeX generator converting dynamic profile trees into authentic single-column Jake's Resume markup with zero input delay.",
       '3-tier resilient compilation engine (Express proxy to remote pdflatex via latexonline.cc, client-side .tex download, and direct 1-click Overleaf form dispatch).',
@@ -126,9 +155,9 @@ export const PROJECTS = [
       'Zero-compute AI ingestion pipeline to sanitize unstructured LLM extraction payloads and normalize nested bullet toggles.',
       'Real-time visual page budget estimator (48-line ceiling) preventing multi-page layout spills.',
     ],
-    liveUrl: 'https://resume-builder-iota-bice.vercel.app/',
+    liveUrl: 'https://jake-resume-builder10.vercel.app/',
     githubUrl: 'https://github.com/Rohit-Pandey10/resume_agy',
-    liveLink: 'https://resume-builder-iota-bice.vercel.app/',
+    liveLink: 'https://jake-resume-builder10.vercel.app/',
     githubLink: 'https://github.com/Rohit-Pandey10/resume_agy',
     featured: true,
   },

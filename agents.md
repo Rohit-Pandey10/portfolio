@@ -218,8 +218,9 @@ const CpStatsSchema = new mongoose.Schema({
 ### 3.3 Static Master Data (`constants.js`)
 All immutable portfolio data lives in `client/src/data/constants.js`:
 - **`PROJECTS` Array:** Master array of portfolio works.
-  - Project 1: **JakeResume — ATS LaTeX Resume Platform** (Top featured, live full-stack application with interactive LaTeX generator and compiler mockup).
-  - Project 2: **MERN Authentication System** (Backend MVC security architecture with JWT, bcrypt, and Postman terminal mockup).
+  - Project 1: **BrandLoom — AI Brand Strategy & Marketing Platform** (Featured hackathon project, adaptive Socratic brand architect and design token synthesizer, dual-LLM pipeline Groq Llama 3.3 70B & Gemini fallback, MongoDB Atlas with local-JSON fallback, live viewport screenshot mockup at `https://brand-loom.vercel.app/`).
+  - Project 2: **JakeResume — ATS LaTeX Resume Platform** (Featured full-stack developer tooling platform, client-side reactive LaTeX generator, 3-tier compiler architecture, ATS score metrics, live at `https://jake-resume-builder10.vercel.app/`).
+  - Project 3: **MERN Authentication System** (Backend MVC security architecture with JWT, bcrypt, and Postman terminal mockup).
 - **`SKILLS` Array:** Grouped by category (`Languages`, `Frontend`, `Backend & DB`, `Tools & Concepts`). Each item has `{ name, level }` where `level` maps to `'Comfortable'` (Mint), `'Learning'` (Lavender), or `'Exploring'` (Blush).
 - **`CP_PROFILE_BUTTONS`:** Outbound links to external profiles (`LeetCode`, `CodeChef`, `Codeforces`, `Codolio`). *(AtCoder is omitted).*
 - **`CP_FALLBACK`:** Client-side fail-safe values used if the backend is unreachable.
@@ -229,7 +230,8 @@ All immutable portfolio data lives in `client/src/data/constants.js`:
   - Case-study cards with responsive dual-pane layout (`1.18fr 0.82fr` desktop, stacking on tablet/mobile).
   - Renders category pill, title, tech tags, narrative paragraph, discrete accomplishment bullets (`→`), and CTA action buttons (`Live App ↗` and `GitHub Repo ↗`).
   - **Dynamic Mockup Frames:**
-    - For `jakeresume`: Renders `LatexResumeMockup` showing real-time line ceiling (`42/48 lines`), ATS Score gauge (`100%`), syntax-highlighted LaTeX AST, and compilation status.
+    - For projects with `image` (e.g. `brandloom`): Renders `ProjectImageMockup` with a high-resolution live application landing page preview, macOS browser title bar with SSL domain pill (`🔒 brand-loom.vercel.app`), and hover micro-interaction.
+    - For `jakeresume`: Renders `LatexResumeMockup` showing real-time line ceiling (`42/48 lines`), ATS Score gauge (`100%`), syntax-highlighted LaTeX AST, and compilation status with macOS browser title bar and SSL domain pill (`🔒 jake-resume-builder10.vercel.app`).
     - For `mern-auth`: Renders `TerminalMockup` showing curl commands and JSON API response payloads.
 - **`CompetitiveProgramming.jsx`:**
   - Platform rating cards (Codeforces rating & rank title, LeetCode rating & contest name, CodeChef stars & division rating).

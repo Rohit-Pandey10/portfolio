@@ -2,6 +2,7 @@
  * Projects.jsx — Featured projects with case-study cards
  *
  * Displays:
+ *   - BrandLoom AI Brand Strategy & Marketing Platform (Live full-stack app + Landing page screenshot preview)
  *   - JakeResume ATS LaTeX Resume Platform (Live full-stack app + LaTeX compiler mockup)
  *   - MERN Authentication System (Backend architecture + terminal mockup)
  *   - Clean links for liveUrl & githubUrl without text truncation
@@ -79,7 +80,9 @@ function TerminalMockup() {
 }
 
 // ── LaTeX resume compiler mockup for JakeResume ─────────────────────────────
-function LatexResumeMockup() {
+function LatexResumeMockup({ liveUrl }) {
+  const displayUrl = liveUrl ? liveUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : 'jake-resume-builder10.vercel.app';
+
   return (
     <div
       style={{
@@ -101,33 +104,32 @@ function LatexResumeMockup() {
           padding: '0.6rem 1rem',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          gap: '0.65rem',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
           <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#FF5F57', display: 'inline-block' }} />
           <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#FEBC2E', display: 'inline-block' }} />
           <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#28C840', display: 'inline-block' }} />
-          <span style={{ marginLeft: '0.5rem', fontSize: '0.68rem', color: 'var(--color-muted)', letterSpacing: '0.04em' }}>
-            jake_resume.tex
-          </span>
         </div>
-        <span
+        <div
           style={{
-            fontSize: '0.65rem',
-            color: 'var(--color-mint)',
-            backgroundColor: 'rgba(191, 239, 212, 0.1)',
-            padding: '0.15rem 0.55rem',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            border: '1px solid var(--color-border)',
             borderRadius: 'var(--radius-pill)',
-            border: '1px solid rgba(191, 239, 212, 0.2)',
+            padding: '0.2rem 0.85rem',
+            fontSize: '0.68rem',
+            color: 'var(--color-muted)',
+            fontFamily: 'var(--font-mono)',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.35rem',
+            maxWidth: 'calc(100% - 60px)',
           }}
         >
-          <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'var(--color-mint)' }} />
-          Reactive AST
-        </span>
+          <span style={{ color: 'var(--color-mint)', fontSize: '0.65rem', flexShrink: 0 }}>🔒</span>
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{displayUrl}</span>
+        </div>
       </div>
 
       {/* Real-time budget & ATS metrics bar */}
@@ -212,6 +214,90 @@ function LatexResumeMockup() {
           <span style={{ color: 'var(--color-mint)' }}>✓ Express proxy · .tex export · Overleaf</span>
           <span style={{ color: 'var(--color-muted)' }}>480ms</span>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Project image / browser mockup ──────────────────────────────────────────
+function ProjectImageMockup({ image, title, liveUrl }) {
+  const displayUrl = liveUrl ? liveUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : 'brand-loom.vercel.app';
+
+  return (
+    <div
+      style={{
+        backgroundColor: '#0D0C0B',
+        border: '1px solid var(--color-border)',
+        borderRadius: 'var(--radius-card)',
+        overflow: 'hidden',
+        width: '100%',
+        boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.6)',
+      }}
+    >
+      {/* Browser mockup title bar */}
+      <div
+        style={{
+          backgroundColor: 'var(--color-charcoal)',
+          borderBottom: '1px solid var(--color-border)',
+          padding: '0.6rem 1rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.65rem',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
+          <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#FF5F57', display: 'inline-block' }} />
+          <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#FEBC2E', display: 'inline-block' }} />
+          <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#28C840', display: 'inline-block' }} />
+        </div>
+        <div
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            border: '1px solid var(--color-border)',
+            borderRadius: 'var(--radius-pill)',
+            padding: '0.2rem 0.85rem',
+            fontSize: '0.68rem',
+            color: 'var(--color-muted)',
+            fontFamily: 'var(--font-mono)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.35rem',
+            maxWidth: 'calc(100% - 60px)',
+          }}
+        >
+          <span style={{ color: 'var(--color-mint)', fontSize: '0.65rem', flexShrink: 0 }}>🔒</span>
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{displayUrl}</span>
+        </div>
+      </div>
+
+      {/* Landing page screenshot */}
+      <div
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
+          aspectRatio: '16 / 10',
+          backgroundColor: '#0a0a0c',
+        }}
+      >
+        <img
+          src={image}
+          alt={title ? `${title} Preview` : 'Project Preview'}
+          loading="lazy"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'top center',
+            display: 'block',
+            transition: 'transform 0.4s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.03)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+        />
       </div>
     </div>
   );
@@ -382,7 +468,15 @@ function ProjectCard({ project, index }) {
 
         {/* Right — mockup frame */}
         <div className="project-card-mockup">
-          {project.id === 'jakeresume' ? <LatexResumeMockup /> : <TerminalMockup />}
+          {project.image ? (
+            <ProjectImageMockup image={project.image} title={project.title} liveUrl={liveUrl} />
+          ) : project.id === 'brandloom' ? (
+            <ProjectImageMockup image="/brandloom-preview.png" title={project.title} liveUrl={liveUrl} />
+          ) : project.id === 'jakeresume' ? (
+            <LatexResumeMockup liveUrl={liveUrl} />
+          ) : (
+            <TerminalMockup />
+          )}
         </div>
       </div>
     </article>

@@ -343,8 +343,8 @@ Any coding agent working on this codebase **must strictly observe the following 
    - CGPA: 9.45
    - Contact Email: `rohitpdev@gmail.com`
    - **Do NOT publish Rohit's phone number** on the website under any circumstance.
-2. **Resume Feature Removal:**
-   - There is **no Resume / Download Resume button** on this portfolio. It was intentionally omitted. Do not re-introduce resume download buttons.
+2. **Resume Asset:**
+   - Rohit's official resume is hosted at `/resume.pdf` (`client/public/resume.pdf`) and linked via the Hero section action button (`#hero-resume-btn`).
 3. **Project Authenticity:**
    - Only real projects created by Rohit may be listed. Never invent hypothetical projects, corporate case studies, or mock clients. Current authentic projects:
      1. **JakeResume — ATS LaTeX Resume Platform**

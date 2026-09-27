@@ -22,6 +22,7 @@ export const LINKS = {
   leetcode: 'https://leetcode.com/u/Rohit_Pandey10/',
   codechef: 'https://www.codechef.com/users/rohit_pandey10',
   codeforces: 'https://codeforces.com/profile/Rohit.Pandey',
+  resume:   '/resume.pdf',
 };
 
 // ── CP Profile buttons (AtCoder intentionally excluded — see AGENTS.md) ──

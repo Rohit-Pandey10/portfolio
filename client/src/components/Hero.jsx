@@ -194,6 +194,9 @@ export default function Hero() {
           <a href={LINKS.codolio} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" id="hero-codolio-btn">
             Coding Profiles
           </a>
+          <a href={LINKS.resume} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" id="hero-resume-btn">
+            Resume ↗
+          </a>
         </div>
 
         {/* Stat cards */}

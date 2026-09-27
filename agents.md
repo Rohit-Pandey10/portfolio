@@ -366,21 +366,23 @@ Any coding agent working on this codebase **must strictly observe the following 
    npm run install
    ```
 
-2. **Run Backend Microservice:**
+2. **Run Both Services Concurrently (Recommended):**
    ```bash
-   cd server
+   # From root
    npm run dev
-   # Runs on http://localhost:5001 with nodemon
-   # Health check: http://localhost:5001/api/health
-   # Stats check:  http://localhost:5001/api/cp-stats
+   # Runs server on :5001 and Vite client on :5173 concurrently
    ```
 
-3. **Run Frontend Client:**
+3. **Or Run Separately:**
    ```bash
-   cd client
-   npm run dev
-   # Runs on http://localhost:5173
-   # Proxies /api requests to localhost:5001
+   # Backend Microservice
+   cd server && npm run dev
+   # Health check: http://localhost:5001/api/health
+   # Stats check:  http://localhost:5001/api/cp-stats
+
+   # Frontend Client
+   cd client && npm run dev
+   # Runs on http://localhost:5173 (proxies /api -> localhost:5001)
    ```
 
 ### 7.2 Pre-Commit Verification Checklist

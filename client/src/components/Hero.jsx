@@ -129,18 +129,33 @@ export default function Hero() {
           LET'S BUILD SOMETHING
         </p>
 
-        {/* Serif subtitle */}
+        {/* Main tagline */}
         <p
           className="font-body reveal"
           style={{
-            fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+            fontSize: 'clamp(1.05rem, 2vw, 1.25rem)',
+            fontWeight: 500,
             color: 'var(--color-text)',
-            marginBottom: '0.75rem',
+            marginBottom: '0.35rem',
             maxWidth: '600px',
             animationDelay: '0.15s',
           }}
         >
-          Computer Engineering Student · MERN Stack Developer · Competitive Programmer
+          MERN Stack Developer · Learning Next.js
+        </p>
+
+        {/* Subtext line beneath tagline */}
+        <p
+          className="font-ui reveal"
+          style={{
+            fontSize: 'clamp(0.85rem, 1.4vw, 0.95rem)',
+            color: 'var(--color-secondary)',
+            maxWidth: '600px',
+            marginBottom: '1rem',
+            animationDelay: '0.18s',
+          }}
+        >
+          Actively sharpening DSA through competitive programming
         </p>
 
         {/* Description */}

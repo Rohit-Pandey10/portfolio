@@ -43,15 +43,7 @@ export default function About() {
             }}
           >
             <p>
-              I am a Computer Engineering student at Dwarkadas J. Sanghvi College of Engineering,
-              Mumbai. I am currently learning full-stack web development with the MERN stack and
-              strengthening my problem-solving skills through competitive programming.
-            </p>
-            <p>
-              I have worked with backend concepts like REST APIs, MVC architecture, JWT authentication,
-              MongoDB, and CRUD operations. I am currently learning React.js to build complete
-              full-stack applications, and I leverage AI-assisted development tools for rapid
-              prototyping.
+              I'm a Computer Engineering student at D. J. Sanghvi College of Engineering, Mumbai, building full-stack applications with the MERN stack and currently learning Next.js. I ship projects quickly using AI-assisted development, and I'm actively strengthening my problem-solving through competitive programming and DSA.
             </p>
           </div>
         </div>

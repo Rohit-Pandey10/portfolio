@@ -16,7 +16,7 @@
 
 import { useCpStats, formatSolved } from '../context/CpStatsContext';
 import SkeletonCard           from './SkeletonCard';
-import { CP_PROFILE_BUTTONS, LINKS } from '../data/constants';
+import { CP_PROFILE_BUTTONS } from '../data/constants';
 
 // ── Sub-components ──────────────────────────────────────────────────────────
 
@@ -251,7 +251,6 @@ export default function CompetitiveProgramming() {
             platform="Codeforces"
             rating={data?.codeforcesRating}
             maxRating={data?.codeforcesMaxRating}
-            title={data?.codeforcesTitle}
             accent="blush"
             loading={loading}
           />
@@ -275,23 +274,6 @@ export default function CompetitiveProgramming() {
             </a>
           ))}
         </div>
-
-        {/* Codolio link */}
-        <a
-          href={LINKS.codolio}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-ui reveal"
-          style={{
-            fontSize: '0.8rem',
-            color: 'var(--color-muted)',
-            textDecoration: 'underline',
-            textUnderlineOffset: '3px',
-            animationDelay: '0.22s',
-          }}
-        >
-          View live Codolio profile ↗
-        </a>
       </div>
     </section>
   );

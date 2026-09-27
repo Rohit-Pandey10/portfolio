@@ -2,82 +2,11 @@
  * Projects.jsx — Featured projects with case-study cards
  *
  * Displays:
- *   - BrandLoom AI Brand Strategy & Marketing Platform (Live full-stack app + Landing page screenshot preview)
+ *   - BrandLoom AI Brand Strategy & Marketing Platform (Live full-stack app + Landing page preview)
  *   - JakeResume ATS LaTeX Resume Platform (Live full-stack app + LaTeX compiler mockup)
- *   - MERN Authentication System (Backend architecture + terminal mockup)
- *   - Clean links for liveUrl & githubUrl without text truncation
  */
 
 import { PROJECTS } from '../data/constants';
-
-// ── Terminal mockup (for backend projects) ──────────────────────────────────
-function TerminalMockup() {
-  return (
-    <div
-      style={{
-        backgroundColor: '#0D0C0B',
-        border: '1px solid var(--color-border)',
-        borderRadius: 'var(--radius-card)',
-        overflow: 'hidden',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.78rem',
-        minHeight: '220px',
-        width: '100%',
-      }}
-      aria-hidden="true"
-    >
-      {/* Terminal title bar */}
-      <div
-        style={{
-          backgroundColor: 'var(--color-charcoal)',
-          borderBottom: '1px solid var(--color-border)',
-          padding: '0.6rem 1rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-        }}
-      >
-        <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#FF5F57', display: 'inline-block' }} />
-        <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#FEBC2E', display: 'inline-block' }} />
-        <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#28C840', display: 'inline-block' }} />
-        <span style={{ marginLeft: '0.5rem', fontSize: '0.68rem', color: 'var(--color-muted)', letterSpacing: '0.04em' }}>
-          POST /api/auth/login
-        </span>
-      </div>
-
-      {/* Terminal body — API response */}
-      <div style={{ padding: '1rem 1.25rem', lineHeight: 1.7 }}>
-        <p style={{ color: 'var(--color-muted)' }}>$ curl -X POST /api/auth/login \</p>
-        <p style={{ color: 'var(--color-muted)', paddingLeft: '1rem' }}>-d '&#123; "email": "user@example.com" &#125;'</p>
-        <br />
-        <p style={{ color: 'var(--color-lavender)' }}>&#123;</p>
-        <p style={{ paddingLeft: '1.25rem' }}>
-          <span style={{ color: 'var(--color-blush)' }}>"success"</span>
-          <span style={{ color: 'var(--color-muted)' }}>: </span>
-          <span style={{ color: 'var(--color-mint)' }}>true</span>
-          <span style={{ color: 'var(--color-muted)' }}>,</span>
-        </p>
-        <p style={{ paddingLeft: '1.25rem' }}>
-          <span style={{ color: 'var(--color-blush)' }}>"token"</span>
-          <span style={{ color: 'var(--color-muted)' }}>: </span>
-          <span style={{ color: 'var(--color-secondary)' }}>"eyJhbGciOiJIUzI1..."</span>
-          <span style={{ color: 'var(--color-muted)' }}>,</span>
-        </p>
-        <p style={{ paddingLeft: '1.25rem' }}>
-          <span style={{ color: 'var(--color-blush)' }}>"user"</span>
-          <span style={{ color: 'var(--color-muted)' }}>: &#123; </span>
-          <span style={{ color: 'var(--color-secondary)' }}>"id"</span>
-          <span style={{ color: 'var(--color-muted)' }}>, </span>
-          <span style={{ color: 'var(--color-secondary)' }}>"email"</span>
-          <span style={{ color: 'var(--color-muted)' }}> &#125;</span>
-        </p>
-        <p style={{ color: 'var(--color-lavender)' }}>&#125;</p>
-        <br />
-        <p style={{ color: 'var(--color-mint)' }}>✓ 200 OK · JWT issued · bcrypt validated</p>
-      </div>
-    </div>
-  );
-}
 
 // ── LaTeX resume compiler mockup for JakeResume ─────────────────────────────
 function LatexResumeMockup({ liveUrl }) {
@@ -458,11 +387,6 @@ function ProjectCard({ project, index }) {
                 <span aria-hidden="true" style={{ fontSize: '1rem', lineHeight: 1 }}>↗</span>
               </a>
             )}
-            {!liveUrl && !githubUrl && (
-              <span className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
-                Internal Architecture · Postman Tested
-              </span>
-            )}
           </div>
         </div>
 
@@ -472,10 +396,8 @@ function ProjectCard({ project, index }) {
             <ProjectImageMockup image={project.image} title={project.title} liveUrl={liveUrl} />
           ) : project.id === 'brandloom' ? (
             <ProjectImageMockup image="/brandloom-preview.png" title={project.title} liveUrl={liveUrl} />
-          ) : project.id === 'jakeresume' ? (
-            <LatexResumeMockup liveUrl={liveUrl} />
           ) : (
-            <TerminalMockup />
+            <LatexResumeMockup liveUrl={liveUrl} />
           )}
         </div>
       </div>
@@ -483,29 +405,10 @@ function ProjectCard({ project, index }) {
   );
 }
 
-// ── Empty state card ────────────────────────────────────────────────────────
-function EmptyStateCard() {
-  return (
-    <div
-      className="card reveal"
-      style={{
-        padding: '2rem 2.5rem',
-        borderStyle: 'dashed',
-        animationDelay: '0.1s',
-      }}
-    >
-      <p
-        className="font-body"
-        style={{ fontSize: '1rem', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.8 }}
-      >
-        More projects coming soon. Currently building and learning full-stack applications with React and Node.js.
-      </p>
-    </div>
-  );
-}
-
 // ── Section ─────────────────────────────────────────────────────────────────
 export default function Projects() {
+  const featuredProjects = PROJECTS.filter((p) => p.id !== 'mern-auth');
+
   return (
     <section id="projects" className="section" aria-label="Projects">
       <div className="container">
@@ -568,10 +471,9 @@ export default function Projects() {
         </h2>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-          {PROJECTS.map((project, i) => (
+          {featuredProjects.map((project, i) => (
             <ProjectCard key={project.id} project={project} index={i} />
           ))}
-          <EmptyStateCard />
         </div>
       </div>
     </section>

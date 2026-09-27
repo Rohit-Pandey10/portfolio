@@ -7,9 +7,9 @@
 // ── Navigation ────────────────────────────────────────────────────────────
 export const NAV_LINKS = [
   { label: 'About',                  href: '#about' },
-  { label: 'Skills',                 href: '#skills' },
-  { label: 'Competitive Programming', href: '#cp' },
   { label: 'Projects',               href: '#projects' },
+  { label: 'Competitive Programming', href: '#cp' },
+  { label: 'Skills',                 href: '#skills' },
   { label: 'Education',              href: '#education' },
   { label: 'Contact',                href: '#contact' },
 ];
@@ -73,7 +73,7 @@ export const SKILLS = [
       { name: 'HTML5',       level: 'Comfortable' },
       { name: 'CSS3',        level: 'Comfortable' },
       { name: 'Tailwind CSS', level: 'Comfortable' },
-      { name: 'React.js',    level: 'Learning'    },
+      { name: 'React.js',    level: 'Comfortable' },
       { name: 'Next.js',     level: 'Learning'    },
     ],
   },

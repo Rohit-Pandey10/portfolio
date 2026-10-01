@@ -9,8 +9,8 @@ const CONTACT_LINKS = [
   {
     id: 'contact-email',
     label: 'Email',
-    display: 'rohitpdev@gmail.com',
-    href: 'mailto:rohitpdev@gmail.com',
+    display: 'rohitpdev10@gmail.com',
+    href: 'mailto:rohitpdev10@gmail.com',
     accent: 'var(--color-mint)',
   },
   {

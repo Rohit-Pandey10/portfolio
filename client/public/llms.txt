@@ -1,0 +1,65 @@
+# Rohit Pandey - Software Engineer & Full-Stack Developer
+
+> Rohit Pandey is a B.Tech Computer Engineering student at Dwarkadas J. Sanghvi College of Engineering (2025–2029) in Mumbai, building full-stack applications, AI-assisted developer tools, and competitive-programming telemetry systems.
+
+Website: https://rohit-pandey10.vercel.app/
+GitHub: https://github.com/Rohit-Pandey10
+LinkedIn: https://www.linkedin.com/in/rohit-pandey-964b1036a/
+Email: rohitpdev@gmail.com
+
+This file is a concise, machine-readable overview of Rohit's portfolio. It includes the technical context an agent needs to understand the projects and the direct resources to consult for deeper details.
+
+**Professional summary:** Full-stack software engineer focused on scalable backend systems, responsive React applications, AI/LLM developer tooling, REST API design, and problem solving. Experienced with the MERN stack, PostgreSQL, Docker, Vercel Serverless, MongoDB Atlas, and remote LaTeX compilation pipelines.
+
+**Education:** Bachelor of Technology (B.Tech.) in Computer Engineering at Dwarkadas J. Sanghvi College of Engineering, Mumbai, India; 2025–2029; CGPA 9.45/10.0.
+
+**Core technical proficiencies:**
+
+- **Languages:** C++, Python, JavaScript (ES6+), TypeScript, SQL, C, Java
+- **Frontend:** React 18/19, Vite, Tailwind CSS, HTML5, CSS3, client-side state management, web performance optimization
+- **Backend and systems:** Node.js, Express.js, RESTful architecture, MVC, microservice proxying, authentication, JWT, bcrypt
+- **Databases and ORMs:** MongoDB Atlas, PostgreSQL, MySQL, Mongoose
+- **DevOps and cloud:** Docker, Vercel Edge/Serverless, Git, GitHub Actions, Linux/macOS environments
+- **Developer tooling and formats:** LaTeX, `pdflatex`, Overleaf, Postman, VS Code, Markdown, JSON Schema
+
+**Featured engineering context:**
+
+- **BrandLoom — AI Brand Strategy & Marketing Platform:** A MERN and Tailwind application with an adaptive Socratic founder interview engine, Groq Llama 3.3 70B as the primary LLM, Gemini as a fallback, MongoDB Atlas with automatic local-JSON fallback, and a prompt-engineering layer that produces personalized brand kits. The system was shipped in a 24-hour hackathon environment.
+- **JakeResume — ATS LaTeX Resume Platform:** A React, Node.js, Express, Tailwind CSS, and LaTeX platform that converts structured profile data into ATS-friendly documents. It includes deterministic LaTeX character and macro sanitization, client-side reactive generation, typed LLM ingestion, a 48-line page-budget estimator, and a three-tier compilation flow using an Express proxy, remote `pdflatex`, client-side `.tex` generation, and Overleaf dispatch.
+- **Personal Portfolio & CP Aggregator:** A React/Vite frontend with a Node.js/Express backend and MongoDB cache. It uses decoupled platform services for Codeforces, LeetCode, CodeChef, and AtCoder, `Promise.allSettled` aggregation, a 15-minute MongoDB cache policy, stale-cache and hardcoded fallbacks, and `public, s-maxage=3600, stale-while-revalidate=86400` response caching for CP statistics. Live stats can be injected into LaTeX source for on-demand resume PDF compilation.
+
+**Competitive programming context:** Rohit actively practices graphs, dynamic programming, greedy algorithms, number theory, and general data structures and algorithms.
+
+- **Codeforces:** handle `Rohit.Pandey`; rating 1109; maximum rating 1199.
+- **LeetCode:** handle `Rohit_Pandey10`; 80+ problems solved; contest rating is exposed by the live CP telemetry API when available.
+- **CodeChef:** handle `rohit_pandey10`; rating 1406; maximum rating 1426; DSA rating 1508.
+- **AtCoder:** participation telemetry contributes to the aggregate contest count; AtCoder is intentionally not rendered as a rating card or profile button in the portfolio UI.
+
+## Featured Projects
+
+- [BrandLoom live deployment](https://brand-loom.vercel.app): AI brand strategy and marketing application.
+- [BrandLoom source repository](https://github.com/Rohit-Pandey10/BrandLoom): MERN implementation, LLM integrations, and fallback architecture.
+- [JakeResume live deployment](https://jake-resume-builder10.vercel.app): ATS-focused LaTeX resume platform.
+- [JakeResume source repository](https://github.com/Rohit-Pandey10/resume_agy): Resume generation, compilation proxy, and page-budget implementation.
+- [Portfolio live deployment](https://rohit-pandey10.vercel.app): Personal portfolio and real-time CP telemetry hub.
+- [Portfolio source repository](https://github.com/Rohit-Pandey10/portfolio): Frontend, backend, deployment configuration, and public assets.
+
+## Competitive Programming Profiles
+
+- [Codeforces profile](https://codeforces.com/profile/Rohit.Pandey): Official Codeforces profile for `Rohit.Pandey`.
+- [LeetCode profile](https://leetcode.com/u/Rohit_Pandey10/): Official LeetCode profile for `Rohit_Pandey10`.
+- [CodeChef profile](https://www.codechef.com/users/rohit_pandey10): Official CodeChef profile for `rohit_pandey10`.
+- [Codolio profile](https://codolio.com/profile/Rohit_Pandey10): Outbound profile link only; Codolio is not scraped by the application.
+
+## Portfolio Resources
+
+- [Official resume](https://rohit-pandey10.vercel.app/resume.pdf): Published one-page resume PDF.
+- [Resume template source](https://github.com/Rohit-Pandey10/portfolio/blob/main/client/src/templates/resumeLatexTemplate.js): Live LaTeX resume template used by the dynamic download flow.
+- [Portfolio README](https://raw.githubusercontent.com/Rohit-Pandey10/portfolio/main/README.md): Setup, project structure, and local development notes.
+- [Portfolio architecture guide](https://raw.githubusercontent.com/Rohit-Pandey10/portfolio/main/AGENTS.md): Detailed system architecture, data contracts, design tokens, and verification protocol.
+
+## Optional
+
+- [Portfolio repository](https://github.com/Rohit-Pandey10/portfolio): Full source tree and commit history for agents that need implementation-level context.
+- [Portfolio AGENTS.md](https://github.com/Rohit-Pandey10/portfolio/blob/main/AGENTS.md): Human- and agent-oriented architecture blueprint.
+- [Portfolio README](https://github.com/Rohit-Pandey10/portfolio/blob/main/README.md): Repository overview and setup documentation.

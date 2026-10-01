@@ -7,7 +7,7 @@
  * total contests attended.
  */
 
-const axios = require('axios');
+const { requestWithTimeout } = require('./httpClient');
 
 const ATCODER_HANDLE = 'rohitpandey10';
 const ATCODER_HISTORY_URL = `https://atcoder.jp/users/${ATCODER_HANDLE}/history/json`;
@@ -15,14 +15,15 @@ const ATCODER_HISTORY_URL = `https://atcoder.jp/users/${ATCODER_HANDLE}/history/
 /**
  * Fetch number of rated contests attended on AtCoder.
  */
-async function getAtCoderContests() {
+async function getAtCoderContests(signal) {
   try {
-    const { data } = await axios.get(ATCODER_HISTORY_URL, {
-      timeout: 8000,
+    const { data } = await requestWithTimeout({
+      method: 'get',
+      url: ATCODER_HISTORY_URL,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       },
-    });
+    }, { signal, label: 'AtCoder history request' });
 
     if (Array.isArray(data)) {
       const ratedContests = data.filter((c) => c.IsRated);

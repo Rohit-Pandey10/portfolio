@@ -53,7 +53,7 @@ export function getResumeLatex(stats = {}) {
 \\begin{center}
     {\\Large \\textbf{Rohit Pandey}} \\\\[2pt]
     Mumbai, India \\\\
-    \\href{mailto:rohitpdev@gmail.com}{rohitpdev@gmail.com}
+    \\href{mailto:rohitpdev10@gmail.com}{rohitpdev10@gmail.com}
     \\enspace|\\enspace \\href{https://rohit-pandey10.vercel.app}{Portfolio}
     \\enspace|\\enspace \\href{https://github.com/Rohit-Pandey10}{GitHub}
     \\enspace|\\enspace \\href{https://www.linkedin.com/in/rohit-pandey-964b1036a/}{LinkedIn}

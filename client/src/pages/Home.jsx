@@ -15,6 +15,7 @@ import Projects                   from '../components/Projects';
 import Education                  from '../components/Education';
 import Contact                    from '../components/Contact';
 import Footer                     from '../components/Footer';
+import ErrorBoundary              from '../components/ErrorBoundary';
 
 export default function Home() {
   // Initialise scroll reveal — re-runs on each render so newly mounted
@@ -28,7 +29,9 @@ export default function Home() {
         <Hero />
         <About />
         <Projects />
-        <CompetitiveProgramming />
+        <ErrorBoundary>
+          <CompetitiveProgramming />
+        </ErrorBoundary>
         <Skills />
         <Education />
         <Contact />

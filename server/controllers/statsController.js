@@ -15,6 +15,11 @@ const CpStats = require('../models/CpStats');
 const { getStats, HARDCODED_FALLBACK } = require('../services/cpAggregator');
 
 const TTL_MINUTES = parseInt(process.env.CACHE_TTL_MINUTES, 10) || 15;
+const STATS_CACHE_CONTROL = 'public, s-maxage=3600, stale-while-revalidate=86400';
+
+function setStatsCacheHeaders(res) {
+  res.set('Cache-Control', STATS_CACHE_CONTROL);
+}
 
 /**
  * GET /api/cp-stats
@@ -35,6 +40,7 @@ exports.getCpStats = async (req, res) => {
 
       if (ageMins < TTL_MINUTES) {
         console.log(`[Controller] Serving cached data (${ageMins.toFixed(1)}min old)`);
+        setStatsCacheHeaders(res);
         return res.json({ success: true, data: { ...cachedDoc, source: 'cache' } });
       }
     }
@@ -54,10 +60,12 @@ exports.getCpStats = async (req, res) => {
       console.warn('[Controller] DB write failed (data still returned):', dbErr.message);
     }
 
+    setStatsCacheHeaders(res);
     return res.json({ success: true, data: { ...freshData, lastUpdated: new Date() } });
   } catch (err) {
     // Belt-and-suspenders — aggregator shouldn't throw, but handle it anyway
     console.error('[Controller] Unexpected error:', err.message);
+    setStatsCacheHeaders(res);
     return res.json({
       success: true,
       data: { ...HARDCODED_FALLBACK, lastUpdated: new Date() },

@@ -13,7 +13,7 @@
  * It does not know about fallback chains, the database, or other services.
  */
 
-const axios = require('axios');
+const { requestWithTimeout } = require('./httpClient');
 
 const LC_GRAPHQL = 'https://leetcode.com/graphql';
 const LC_USERNAME = 'Rohit_Pandey10'; // LeetCode username — update if different
@@ -21,7 +21,7 @@ const LC_USERNAME = 'Rohit_Pandey10'; // LeetCode username — update if differe
 /**
  * Fetch number of problems solved across all difficulties.
  */
-async function getLeetCodeSolvedCount() {
+async function getLeetCodeSolvedCount(signal) {
   const query = `
     query userProblemsSolved($username: String!) {
       matchedUser(username: $username) {
@@ -36,17 +36,18 @@ async function getLeetCodeSolvedCount() {
     }
   `;
 
-  const { data } = await axios.post(
-    LC_GRAPHQL,
-    { query, variables: { username: LC_USERNAME } },
-    {
-      timeout: 10000,
-      headers: {
-        'Content-Type': 'application/json',
-        Referer: 'https://leetcode.com',
-      },
-    }
-  );
+  const { data } = await requestWithTimeout({
+    method: 'post',
+    url: LC_GRAPHQL,
+    data: { query, variables: { username: LC_USERNAME } },
+    headers: {
+      'Content-Type': 'application/json',
+      Referer: 'https://leetcode.com',
+    },
+  }, {
+      signal,
+      label: 'LeetCode solved GraphQL request',
+    });
 
   const stats = data?.data?.matchedUser?.submitStatsGlobal?.acSubmissionNum;
   const calendarStr = data?.data?.matchedUser?.submissionCalendar;
@@ -88,7 +89,7 @@ async function getLeetCodeSolvedCount() {
 /**
  * Fetch LeetCode contest rating and latest contest name.
  */
-async function getLeetCodeContestData() {
+async function getLeetCodeContestData(signal) {
   const query = `
     query userContestRanking($username: String!) {
       userContestRanking(username: $username) {
@@ -104,17 +105,15 @@ async function getLeetCodeContestData() {
     }
   `;
 
-  const { data } = await axios.post(
-    LC_GRAPHQL,
-    { query, variables: { username: LC_USERNAME } },
-    {
-      timeout: 10000,
-      headers: {
-        'Content-Type': 'application/json',
-        Referer: 'https://leetcode.com',
-      },
-    }
-  );
+  const { data } = await requestWithTimeout({
+    method: 'post',
+    url: LC_GRAPHQL,
+    data: { query, variables: { username: LC_USERNAME } },
+    headers: {
+      'Content-Type': 'application/json',
+      Referer: 'https://leetcode.com',
+    },
+  }, { signal, label: 'LeetCode contest GraphQL request' });
 
   const ranking = data?.data?.userContestRanking;
   const history = data?.data?.userContestRankingHistory;
@@ -142,10 +141,10 @@ async function getLeetCodeContestData() {
  * Main export — fetches solved count and contest data in parallel.
  * Returns partial results rather than throwing if one call fails.
  */
-async function getLeetCodeStats() {
+async function getLeetCodeStats(signal) {
   const [solvedResult, contestResult] = await Promise.allSettled([
-    getLeetCodeSolvedCount(),
-    getLeetCodeContestData(),
+    getLeetCodeSolvedCount(signal),
+    getLeetCodeContestData(signal),
   ]);
 
   const leetcodeSolved =

@@ -12,6 +12,7 @@ const { getCodeforcesStats } = require('./codeforcesService');
 const { getLeetCodeStats } = require('./leetcodeService');
 const { getCodeChefStats } = require('./codechefService');
 const { getAtCoderContests } = require('./atcoderService');
+const { withAbortTimeout } = require('./httpClient');
 
 // ─── Tier 4: Hardcoded fallback constants ────────────────────────────────────
 const HARDCODED_FALLBACK = {
@@ -115,16 +116,22 @@ async function getStats(cachedDoc) {
   try {
     console.log('[Aggregator] Fetching from platform APIs (Codeforces, LeetCode, CodeChef, AtCoder)');
     const [cfResult, lcResult, ccResult, acResult] = await Promise.allSettled([
-      getCodeforcesStats(),
-      getLeetCodeStats(),
-      getCodeChefStats(),
-      getAtCoderContests(),
+      withAbortTimeout((signal) => getCodeforcesStats(signal), { label: 'Codeforces aggregation' }),
+      withAbortTimeout((signal) => getLeetCodeStats(signal), { label: 'LeetCode aggregation' }),
+      withAbortTimeout((signal) => getCodeChefStats(signal), { label: 'CodeChef aggregation' }),
+      withAbortTimeout((signal) => getAtCoderContests(signal), { label: 'AtCoder aggregation' }),
     ]);
 
     const cfStats = cfResult.status === 'fulfilled' ? cfResult.value : {};
     const lcStats = lcResult.status === 'fulfilled' ? lcResult.value : {};
     const ccStats = ccResult.status === 'fulfilled' ? ccResult.value : {};
     const acStats = acResult.status === 'fulfilled' ? acResult.value : {};
+
+    for (const [label, result] of [['Codeforces', cfResult], ['LeetCode', lcResult], ['CodeChef', ccResult], ['AtCoder', acResult]]) {
+      if (result.status === 'rejected') {
+        console.warn(`[Aggregator] ${label} unavailable; using cache/fallback:`, result.reason?.message);
+      }
+    }
 
     const hasAnyData =
       cfStats.codeforcesSolved != null ||

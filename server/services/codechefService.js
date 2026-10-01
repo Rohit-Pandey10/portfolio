@@ -15,8 +15,8 @@
  * This service owns ONLY CodeChef interaction.
  */
 
-const axios = require('axios');
 const cheerio = require('cheerio');
+const { requestWithTimeout } = require('./httpClient');
 
 const CC_USERNAME = 'rohit_pandey10';
 const CC_URL = `https://www.codechef.com/users/${CC_USERNAME}`;
@@ -24,13 +24,14 @@ const CC_URL = `https://www.codechef.com/users/${CC_USERNAME}`;
 /**
  * Fetch CodeChef stats by scraping the public profile.
  */
-async function getCodeChefStats() {
-  const { data } = await axios.get(CC_URL, {
-    timeout: 18000,
+async function getCodeChefStats(signal) {
+  const { data } = await requestWithTimeout({
+    method: 'get',
+    url: CC_URL,
     headers: {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
-  });
+  }, { signal, label: 'CodeChef profile request' });
 
   const $ = cheerio.load(data);
 

@@ -12,7 +12,7 @@
  * It does not know about fallback chains, the database, or other services.
  */
 
-const axios = require('axios');
+const { requestWithTimeout } = require('./httpClient');
 
 const CF_HANDLE = 'Rohit.Pandey'; // Codeforces main account (not Rohit_Pandey10 which is a new alt)
 const CF_BASE = 'https://codeforces.com/api';
@@ -22,9 +22,9 @@ const CF_BASE = 'https://codeforces.com/api';
  * Returns null fields on failure rather than throwing, so the aggregator
  * can still use partial data.
  */
-async function getCodeforcesUserInfo() {
+async function getCodeforcesUserInfo(signal) {
   const url = `${CF_BASE}/user.info?handles=${CF_HANDLE}`;
-  const { data } = await axios.get(url, { timeout: 8000 });
+  const { data } = await requestWithTimeout({ method: 'get', url }, { signal, label: 'Codeforces user.info request' });
 
   if (data.status !== 'OK' || !data.result?.length) {
     throw new Error(`Codeforces user.info returned status: ${data.status}`);
@@ -42,9 +42,9 @@ async function getCodeforcesUserInfo() {
  * Count unique problems solved on Codeforces by finding accepted submissions
  * and deduplicating by problem ID (contestId + index).
  */
-async function getCodeforcesSolvedCount() {
+async function getCodeforcesSolvedCount(signal) {
   const url = `${CF_BASE}/user.status?handle=${CF_HANDLE}&from=1&count=10000`;
-  const { data } = await axios.get(url, { timeout: 12000 });
+  const { data } = await requestWithTimeout({ method: 'get', url }, { signal, label: 'Codeforces user.status request' });
 
   if (data.status !== 'OK') {
     throw new Error(`Codeforces user.status returned status: ${data.status}`);
@@ -74,9 +74,9 @@ async function getCodeforcesSolvedCount() {
 /**
  * Fetch rated contests attended on Codeforces.
  */
-async function getCodeforcesContestCount() {
+async function getCodeforcesContestCount(signal) {
   const url = `${CF_BASE}/user.rating?handle=${CF_HANDLE}`;
-  const { data } = await axios.get(url, { timeout: 8000 });
+  const { data } = await requestWithTimeout({ method: 'get', url }, { signal, label: 'Codeforces user.rating request' });
 
   if (data.status !== 'OK') {
     throw new Error(`Codeforces user.rating returned status: ${data.status}`);
@@ -89,11 +89,11 @@ async function getCodeforcesContestCount() {
  * Main export — fetches info, solved count, and contests attended.
  * Returns a partial result if one of the calls fails.
  */
-async function getCodeforcesStats() {
+async function getCodeforcesStats(signal) {
   const [infoResult, solvedResult, contestResult] = await Promise.allSettled([
-    getCodeforcesUserInfo(),
-    getCodeforcesSolvedCount(),
-    getCodeforcesContestCount(),
+    getCodeforcesUserInfo(signal),
+    getCodeforcesSolvedCount(signal),
+    getCodeforcesContestCount(signal),
   ]);
 
   const info = infoResult.status === 'fulfilled' ? infoResult.value : {};

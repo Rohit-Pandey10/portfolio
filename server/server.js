@@ -42,6 +42,7 @@ app.get('/api/health', (req, res) => {
 
 // CP stats endpoint
 app.use('/api/cp-stats', statsRoutes);
+app.use('/api/stats', statsRoutes);
 
 // LaTeX compiler proxy used by the client's dynamic resume download.
 app.post('/api/compile-latex', async (req, res, next) => {

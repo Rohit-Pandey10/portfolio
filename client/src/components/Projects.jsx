@@ -200,34 +200,79 @@ function ProjectImageMockup({ image, title, liveUrl }) {
       </div>
 
       {/* Landing page screenshot */}
-      <div
-        style={{
-          position: 'relative',
-          overflow: 'hidden',
-          aspectRatio: '16 / 10',
-          backgroundColor: '#0a0a0c',
-        }}
-      >
-        <img
-          src={image}
-          alt={title ? `${title} Preview` : 'Project Preview'}
-          loading="lazy"
+      {liveUrl ? (
+        <a
+          href={liveUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${title || 'project'} live deployment in a new tab`}
+          title="Open live deployment in a new tab"
           style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'top center',
             display: 'block',
-            transition: 'transform 0.4s ease',
+            color: 'inherit',
+            textDecoration: 'none',
+            outlineOffset: '3px',
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'scale(1.03)';
+        >
+          <div
+            style={{
+              position: 'relative',
+              overflow: 'hidden',
+              aspectRatio: '16 / 10',
+              backgroundColor: '#0a0a0c',
+            }}
+          >
+            <img
+              src={image}
+              alt={title ? `${title} Preview` : 'Project Preview'}
+              loading="lazy"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'top center',
+                display: 'block',
+                transition: 'transform 0.4s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.03)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            />
+          </div>
+        </a>
+      ) : (
+        <div
+          style={{
+            position: 'relative',
+            overflow: 'hidden',
+            aspectRatio: '16 / 10',
+            backgroundColor: '#0a0a0c',
           }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'scale(1)';
-          }}
-        />
-      </div>
+        >
+          <img
+            src={image}
+            alt={title ? `${title} Preview` : 'Project Preview'}
+            loading="lazy"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'top center',
+              display: 'block',
+              transition: 'transform 0.4s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.03)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

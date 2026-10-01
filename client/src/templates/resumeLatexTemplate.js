@@ -30,7 +30,7 @@ export function getResumeLatex(stats = {}) {
     codeforcesMax: escapeLatex(readMetric(codeforces, 'maxRating', 'codeforcesMaxRating', '1199')),
     codechefRating: escapeLatex(readMetric(codechef, 'rating', 'codechefRating', '1406')),
     codechefMax: escapeLatex(readMetric(codechef, 'maxRating', 'codechefMaxRating', '1426')),
-    leetcodeSolved: escapeLatex(readMetric(leetcode, 'totalSolved', ['solved', 'leetcodeSolved'], '80+')),
+    leetcodeRating: escapeLatex(readMetric(leetcode, 'rating', ['leetcodeContestRating'], '1500')),
     codechefDsa: escapeLatex(readMetric(codechef, 'dsaRating', 'codechefDsaRating', '1508')),
   };
 
@@ -92,7 +92,7 @@ CGPA: 9.45
     \\item Solved \\textbf{${values.totalSolved} algorithmic problems} across LeetCode, CodeChef, Codeforces, and AtCoder, covering Data Structures, Algorithms, and competitive programming.
     \\item Participated in \\textbf{${values.contestsCount} coding contests} across multiple competitive programming platforms.
     \\item \\textbf{CodeChef: ${values.codechefRating}} (Max: ${values.codechefMax}) \\quad \\textbf{Codeforces: ${values.codeforcesRating}} (Max: ${values.codeforcesMax})
-    \\item \\textbf{LeetCode: ${values.leetcodeSolved}} \\quad \\textbf{CodeChef DSA: ${values.codechefDsa}} (Max: ${values.codechefDsa})
+    \\item \\textbf{LeetCode: ${values.leetcodeRating}} \\quad \\textbf{CodeChef DSA: ${values.codechefDsa}} (Max: ${values.codechefDsa})
 \\end{itemize}
 
 \\section{Technical Skills}

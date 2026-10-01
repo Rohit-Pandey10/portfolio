@@ -29,7 +29,7 @@ export async function downloadDynamicResume(stats = {}) {
     console.info('[Resume] Sending live metrics to LaTeX compiler:', JSON.stringify({
       totalSolved: stats.totalSolved ?? stats.problemsSolved ?? stats.totalProblemsSolved,
       totalContests: stats.totalContests ?? stats.contests ?? stats.contestsAttended,
-      leetcodeSolved: stats.leetcode?.totalSolved ?? stats.leetcode?.solved ?? stats.leetcodeSolved,
+      leetcodeRating: stats.leetcode?.rating ?? stats.leetcodeContestRating,
     }));
 
     const response = await fetch('/api/compile-latex', {

@@ -13,6 +13,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const axios = require('axios');
 const connectDB = require('./config/db');
 const statsRoutes = require('./routes/statsRoutes');
 
@@ -26,7 +27,7 @@ connectDB();
 app.use(
   cors({
     origin: '*', // Allow all origins for this public portfolio API (Vercel preview domains, etc.)
-    methods: ['GET'],
+    methods: ['GET', 'POST'],
     optionsSuccessStatus: 200,
   })
 );
@@ -41,6 +42,43 @@ app.get('/api/health', (req, res) => {
 
 // CP stats endpoint
 app.use('/api/cp-stats', statsRoutes);
+
+// LaTeX compiler proxy used by the client's dynamic resume download.
+app.post('/api/compile-latex', async (req, res, next) => {
+  const tex = req.body?.tex;
+  if (typeof tex !== 'string' || tex.length === 0 || tex.length > 100000) {
+    return res.status(400).json({ error: 'A valid LaTeX document is required.' });
+  }
+
+  try {
+    const compilerResponse = await axios.get('https://latexonline.cc/compile', {
+      params: { text: tex },
+      responseType: 'arraybuffer',
+      timeout: 30000,
+      validateStatus: () => true,
+    });
+
+    const contentType = compilerResponse.headers['content-type'] || '';
+    if (compilerResponse.status < 200 || compilerResponse.status >= 300 || !contentType.includes('application/pdf')) {
+      const diagnostic = Buffer.from(compilerResponse.data || '').toString('utf8').slice(0, 2000);
+      console.error('[Resume] Remote LaTeX compiler rejected the document:', {
+        status: compilerResponse.status,
+        contentType,
+        diagnostic,
+      });
+      return res.status(502).json({ error: 'Remote LaTeX compilation failed.', detail: diagnostic });
+    }
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename="Rohit_Pandey_Resume.pdf"',
+      'Cache-Control': 'no-store',
+    });
+    return res.send(Buffer.from(compilerResponse.data));
+  } catch (error) {
+    return next(error);
+  }
+});
 
 // 404 handler
 app.use((req, res) => {

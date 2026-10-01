@@ -12,10 +12,12 @@
  * context instance; no second fetch occurs.
  */
 
+import { useState } from 'react';
 import { useCpStats, formatSolved } from '../context/CpStatsContext';
 import SkeletonCard   from './SkeletonCard';
 import { LINKS, CP_FALLBACK } from '../data/constants';
 import HeroDevGrid    from './HeroDevGrid';
+import { downloadDynamicResume } from '../utils/generateResume';
 
 function StatCard({ label, value, accent, loading }) {
   if (loading) return <SkeletonCard />;
@@ -47,11 +49,22 @@ function StatCard({ label, value, accent, loading }) {
 
 export default function Hero() {
   const { data, loading, error } = useCpStats();
+  const [generatingResume, setGeneratingResume] = useState(false);
 
   // formatSolved appends '+' for cache/fallback data to signal approximation;
   // shows bare number for live platform-apis data; '\u2014' if absent.
   const problemsSolved   = loading ? null : formatSolved(data);
   const contestsAttended = data?.contestsAttended ?? CP_FALLBACK.contestsAttended;
+
+  const handleResumeDownload = async () => {
+    setGeneratingResume(true);
+    try {
+      console.info('[Resume] Download requested with active CP stats:', JSON.stringify(data ?? CP_FALLBACK));
+      await downloadDynamicResume(data ?? CP_FALLBACK);
+    } finally {
+      setGeneratingResume(false);
+    }
+  };
 
   return (
     <section
@@ -194,9 +207,16 @@ export default function Hero() {
           <a href={LINKS.codolio} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" id="hero-codolio-btn">
             Coding Profiles
           </a>
-          <a href={LINKS.resume} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" id="hero-resume-btn">
-            Resume ↗
-          </a>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            id="hero-resume-btn"
+            onClick={handleResumeDownload}
+            disabled={generatingResume}
+            aria-busy={generatingResume}
+          >
+            {generatingResume ? 'Compiling PDF...' : 'Resume ↗'}
+          </button>
         </div>
 
         {/* Stat cards */}

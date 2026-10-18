@@ -3,7 +3,7 @@
  *
  * Displays:
  *   - BrandLoom AI Brand Strategy & Marketing Platform (Live full-stack app + Landing page preview)
- *   - JakeResume ATS LaTeX Resume Platform (Live full-stack app + LaTeX compiler mockup)
+ *   - JakeResume ATS LaTeX Resume Platform (Live full-stack app + Landing page preview)
  */
 
 import { PROJECTS } from '../data/constants';

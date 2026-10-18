@@ -137,6 +137,7 @@ export const PROJECTS = [
   {
     id: 'jakeresume',
     title: 'JakeResume — ATS LaTeX Resume Platform',
+    image: '/jakeresume-preview.png',
     category: 'Full Stack / Developer Tooling',
     description:
       'A full-stack resume platform engineered to eliminate manual LaTeX formatting. Features client-side reactive LaTeX generation, bullet-level toggles, an atomic special-character sanitization engine, real-time 1-page visual budget gauges, and a 3-tier compilation architecture.',
